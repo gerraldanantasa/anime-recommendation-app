@@ -1,0 +1,531 @@
+2025-02-08 22:02:16,276 - ERROR: Page 1 collection error: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:02:16,279 - ERROR: Page 1 collection error: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:02:16,291 - INFO: Saved 0 errors to anime_collection_errors.json
+2025-02-08 22:02:19,117 - ERROR: Page 1 collection error: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:02:19,120 - ERROR: Page 1 collection error: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:02:19,123 - INFO: Saved 0 errors to anime_collection_errors.json
+2025-02-08 22:02:26,461 - ERROR: Page 1 collection error: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:02:26,464 - ERROR: Page 1 collection error: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:02:26,467 - INFO: Saved 0 errors to anime_collection_errors.json
+2025-02-08 22:06:10,736 - ERROR: Page 1 collection error: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:06:10,739 - ERROR: Page 1 collection error: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:06:10,748 - INFO: Saved 0 errors to anime_collection_errors.json
+2025-02-08 22:06:18,437 - ERROR: Page 1 collection error: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:06:18,441 - ERROR: Page 1 collection error: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:06:18,445 - INFO: Saved 0 errors to anime_collection_errors.json
+2025-02-08 22:06:33,455 - ERROR: Failed to fetch details for 52991: 'mal_id'
+2025-02-08 22:06:33,455 - WARNING: Detail fetch error for 52991: 'mal_id'
+2025-02-08 22:06:34,668 - ERROR: Failed to fetch details for 5114: 'mal_id'
+2025-02-08 22:06:34,668 - WARNING: Detail fetch error for 5114: 'mal_id'
+2025-02-08 22:06:35,877 - ERROR: Failed to fetch details for 9253: 'mal_id'
+2025-02-08 22:06:35,878 - WARNING: Detail fetch error for 9253: 'mal_id'
+2025-02-08 22:06:37,091 - ERROR: Failed to fetch details for 60022: 'mal_id'
+2025-02-08 22:06:37,092 - WARNING: Detail fetch error for 60022: 'mal_id'
+2025-02-08 22:06:38,301 - ERROR: Failed to fetch details for 38524: 'mal_id'
+2025-02-08 22:06:38,301 - WARNING: Detail fetch error for 38524: 'mal_id'
+2025-02-08 22:06:39,510 - ERROR: Failed to fetch details for 28977: 'mal_id'
+2025-02-08 22:06:39,510 - WARNING: Detail fetch error for 28977: 'mal_id'
+2025-02-08 22:06:40,719 - ERROR: Failed to fetch details for 39486: 'mal_id'
+2025-02-08 22:06:40,720 - WARNING: Detail fetch error for 39486: 'mal_id'
+2025-02-08 22:06:41,929 - ERROR: Failed to fetch details for 11061: 'mal_id'
+2025-02-08 22:06:41,929 - WARNING: Detail fetch error for 11061: 'mal_id'
+2025-02-08 22:06:43,140 - ERROR: Failed to fetch details for 9969: 'mal_id'
+2025-02-08 22:06:43,140 - WARNING: Detail fetch error for 9969: 'mal_id'
+2025-02-08 22:06:44,352 - ERROR: Failed to fetch details for 15417: 'mal_id'
+2025-02-08 22:06:44,352 - WARNING: Detail fetch error for 15417: 'mal_id'
+2025-02-08 22:06:45,561 - ERROR: Failed to fetch details for 820: 'mal_id'
+2025-02-08 22:06:45,561 - WARNING: Detail fetch error for 820: 'mal_id'
+2025-02-08 22:06:46,772 - ERROR: Failed to fetch details for 41467: 'mal_id'
+2025-02-08 22:06:46,773 - WARNING: Detail fetch error for 41467: 'mal_id'
+2025-02-08 22:06:47,984 - ERROR: Failed to fetch details for 43608: 'mal_id'
+2025-02-08 22:06:47,984 - WARNING: Detail fetch error for 43608: 'mal_id'
+2025-02-08 22:06:49,217 - ERROR: Failed to fetch details for 34096: 'mal_id'
+2025-02-08 22:06:49,217 - WARNING: Detail fetch error for 34096: 'mal_id'
+2025-02-08 22:06:50,427 - ERROR: Failed to fetch details for 42938: 'mal_id'
+2025-02-08 22:06:50,427 - WARNING: Detail fetch error for 42938: 'mal_id'
+2025-02-08 22:06:51,638 - ERROR: Failed to fetch details for 4181: 'mal_id'
+2025-02-08 22:06:51,638 - WARNING: Detail fetch error for 4181: 'mal_id'
+2025-02-08 22:06:52,850 - ERROR: Failed to fetch details for 918: 'mal_id'
+2025-02-08 22:06:52,850 - WARNING: Detail fetch error for 918: 'mal_id'
+2025-02-08 22:06:54,058 - ERROR: Failed to fetch details for 28851: 'mal_id'
+2025-02-08 22:06:54,058 - WARNING: Detail fetch error for 28851: 'mal_id'
+2025-02-08 22:06:55,266 - ERROR: Failed to fetch details for 35180: 'mal_id'
+2025-02-08 22:06:55,266 - WARNING: Detail fetch error for 35180: 'mal_id'
+2025-02-08 22:06:56,477 - ERROR: Failed to fetch details for 2904: 'mal_id'
+2025-02-08 22:06:56,478 - WARNING: Detail fetch error for 2904: 'mal_id'
+2025-02-08 22:06:57,686 - ERROR: Failed to fetch details for 15335: 'mal_id'
+2025-02-08 22:06:57,686 - WARNING: Detail fetch error for 15335: 'mal_id'
+2025-02-08 22:06:58,898 - ERROR: Failed to fetch details for 54492: 'mal_id'
+2025-02-08 22:06:58,898 - WARNING: Detail fetch error for 54492: 'mal_id'
+2025-02-08 22:07:00,106 - ERROR: Failed to fetch details for 37491: 'mal_id'
+2025-02-08 22:07:00,107 - WARNING: Detail fetch error for 37491: 'mal_id'
+2025-02-08 22:07:01,325 - ERROR: Failed to fetch details for 19: 'mal_id'
+2025-02-08 22:07:01,325 - WARNING: Detail fetch error for 19: 'mal_id'
+2025-02-08 22:07:02,533 - ERROR: Failed to fetch details for 51535: 'mal_id'
+2025-02-08 22:07:02,533 - WARNING: Detail fetch error for 51535: 'mal_id'
+2025-02-08 22:07:04,164 - ERROR: Failed to fetch details for 35247: 'mal_id'
+2025-02-08 22:07:04,164 - WARNING: Detail fetch error for 35247: 'mal_id'
+2025-02-08 22:07:05,376 - ERROR: Failed to fetch details for 37987: 'mal_id'
+2025-02-08 22:07:05,377 - WARNING: Detail fetch error for 37987: 'mal_id'
+2025-02-08 22:07:06,587 - ERROR: Failed to fetch details for 40682: 'mal_id'
+2025-02-08 22:07:06,587 - WARNING: Detail fetch error for 40682: 'mal_id'
+2025-02-08 22:07:07,801 - ERROR: Failed to fetch details for 32281: 'mal_id'
+2025-02-08 22:07:07,801 - WARNING: Detail fetch error for 32281: 'mal_id'
+2025-02-08 22:07:09,014 - ERROR: Failed to fetch details for 58567: 'mal_id'
+2025-02-08 22:07:09,014 - WARNING: Detail fetch error for 58567: 'mal_id'
+2025-02-08 22:07:10,226 - ERROR: Failed to fetch details for 49387: 'mal_id'
+2025-02-08 22:07:10,226 - WARNING: Detail fetch error for 49387: 'mal_id'
+2025-02-08 22:07:11,441 - ERROR: Failed to fetch details for 36838: 'mal_id'
+2025-02-08 22:07:11,441 - WARNING: Detail fetch error for 36838: 'mal_id'
+2025-02-08 22:07:12,663 - ERROR: Failed to fetch details for 37510: 'mal_id'
+2025-02-08 22:07:12,663 - WARNING: Detail fetch error for 37510: 'mal_id'
+2025-02-08 22:07:13,881 - ERROR: Failed to fetch details for 31758: 'mal_id'
+2025-02-08 22:07:13,881 - WARNING: Detail fetch error for 31758: 'mal_id'
+2025-02-08 22:07:15,100 - ERROR: Failed to fetch details for 40028: 'mal_id'
+2025-02-08 22:07:15,100 - WARNING: Detail fetch error for 40028: 'mal_id'
+2025-02-08 22:07:16,313 - ERROR: Failed to fetch details for 263: 'mal_id'
+2025-02-08 22:07:16,313 - WARNING: Detail fetch error for 263: 'mal_id'
+2025-02-08 22:07:17,734 - ERROR: Failed to fetch details for 55690: 'mal_id'
+2025-02-08 22:07:17,734 - WARNING: Detail fetch error for 55690: 'mal_id'
+2025-02-08 22:07:19,115 - ERROR: Failed to fetch details for 32935: 'mal_id'
+2025-02-08 22:07:19,115 - WARNING: Detail fetch error for 32935: 'mal_id'
+2025-02-08 22:07:20,483 - ERROR: Failed to fetch details for 199: 'mal_id'
+2025-02-08 22:07:20,483 - WARNING: Detail fetch error for 199: 'mal_id'
+2025-02-08 22:07:21,847 - ERROR: Failed to fetch details for 51009: 'mal_id'
+2025-02-08 22:07:21,847 - WARNING: Detail fetch error for 51009: 'mal_id'
+2025-02-08 22:07:23,193 - ERROR: Failed to fetch details for 17074: 'mal_id'
+2025-02-08 22:07:23,193 - WARNING: Detail fetch error for 17074: 'mal_id'
+2025-02-08 22:07:24,583 - ERROR: Failed to fetch details for 47917: 'mal_id'
+2025-02-08 22:07:24,583 - WARNING: Detail fetch error for 47917: 'mal_id'
+2025-02-08 22:07:25,943 - ERROR: Failed to fetch details for 37521: 'mal_id'
+2025-02-08 22:07:25,943 - WARNING: Detail fetch error for 37521: 'mal_id'
+2025-02-08 22:07:27,324 - ERROR: Failed to fetch details for 48583: 'mal_id'
+2025-02-08 22:07:27,324 - WARNING: Detail fetch error for 48583: 'mal_id'
+2025-02-08 22:07:28,537 - ERROR: Failed to fetch details for 58514: 'mal_id'
+2025-02-08 22:07:28,537 - WARNING: Detail fetch error for 58514: 'mal_id'
+2025-02-08 22:07:29,750 - ERROR: Failed to fetch details for 1: 'mal_id'
+2025-02-08 22:07:29,750 - WARNING: Detail fetch error for 1: 'mal_id'
+2025-02-08 22:07:31,160 - ERROR: Failed to fetch details for 55255: 'mal_id'
+2025-02-08 22:07:31,160 - WARNING: Detail fetch error for 55255: 'mal_id'
+2025-02-08 22:07:32,563 - ERROR: Failed to fetch details for 52198: 'mal_id'
+2025-02-08 22:07:32,563 - WARNING: Detail fetch error for 52198: 'mal_id'
+2025-02-08 22:07:34,032 - ERROR: Failed to fetch details for 2921: 'mal_id'
+2025-02-08 22:07:34,032 - WARNING: Detail fetch error for 2921: 'mal_id'
+2025-02-08 22:07:35,382 - ERROR: Failed to fetch details for 55016: 'mal_id'
+2025-02-08 22:07:35,383 - WARNING: Detail fetch error for 55016: 'mal_id'
+2025-02-08 22:07:37,204 - ERROR: Failed to fetch details for 45649: 'mal_id'
+2025-02-08 22:07:37,205 - WARNING: Detail fetch error for 45649: 'mal_id'
+2025-02-08 22:07:38,835 - ERROR: Failed to fetch details for 50160: 'mal_id'
+2025-02-08 22:07:38,836 - WARNING: Detail fetch error for 50160: 'mal_id'
+2025-02-08 22:07:40,045 - ERROR: Failed to fetch details for 44074: 'mal_id'
+2025-02-08 22:07:40,046 - WARNING: Detail fetch error for 44074: 'mal_id'
+2025-02-08 22:07:41,257 - ERROR: Failed to fetch details for 21: 'mal_id'
+2025-02-08 22:07:41,258 - WARNING: Detail fetch error for 21: 'mal_id'
+2025-02-08 22:07:42,618 - ERROR: Failed to fetch details for 47778: 'mal_id'
+2025-02-08 22:07:42,621 - WARNING: Detail fetch error for 47778: 'mal_id'
+2025-02-08 22:07:43,974 - ERROR: Failed to fetch details for 53223: 'mal_id'
+2025-02-08 22:07:43,974 - WARNING: Detail fetch error for 53223: 'mal_id'
+2025-02-08 22:07:45,312 - ERROR: Failed to fetch details for 39894: 'mal_id'
+2025-02-08 22:07:45,312 - WARNING: Detail fetch error for 39894: 'mal_id'
+2025-02-08 22:07:46,671 - ERROR: Failed to fetch details for 24701: 'mal_id'
+2025-02-08 22:07:46,671 - WARNING: Detail fetch error for 24701: 'mal_id'
+2025-02-08 22:07:48,018 - ERROR: Failed to fetch details for 50172: 'mal_id'
+2025-02-08 22:07:48,018 - WARNING: Detail fetch error for 50172: 'mal_id'
+2025-02-08 22:07:50,533 - ERROR: Failed to fetch details for 48569: 'mal_id'
+2025-02-08 22:07:50,533 - WARNING: Detail fetch error for 48569: 'mal_id'
+2025-02-08 22:07:59,335 - WARNING: Top anime fetch attempt 1 failed: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:08:00,336 - WARNING: Top anime fetch attempt 2 failed: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:08:02,337 - WARNING: Top anime fetch attempt 3 failed: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:08:02,337 - ERROR: Failed to fetch page 1 after 3 attempts
+2025-02-08 22:08:02,337 - ERROR: Error collecting page 1: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:08:02,339 - WARNING: Top anime fetch attempt 1 failed: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:08:03,340 - WARNING: Top anime fetch attempt 2 failed: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:08:05,340 - WARNING: Top anime fetch attempt 3 failed: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:08:05,340 - ERROR: Failed to fetch page 1 after 3 attempts
+2025-02-08 22:08:05,340 - ERROR: Error collecting page 1: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:08:05,344 - ERROR: Main collection process failed: 'genres'
+2025-02-08 22:08:34,224 - ERROR: Failed to process anime 9253: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=9253, endpoint=anime
+2025-02-08 22:08:34,224 - WARNING: Anime Error: {'mal_id': 9253, 'title': 'Steins;Gate', 'error_message': 'HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=9253, endpoint=anime'}
+2025-02-08 22:08:34,634 - ERROR: Failed to process anime 38524: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=38524, endpoint=anime
+2025-02-08 22:08:34,634 - WARNING: Anime Error: {'mal_id': 38524, 'title': 'Shingeki no Kyojin Season 3 Part 2', 'error_message': 'HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=38524, endpoint=anime'}
+2025-02-08 22:08:34,838 - ERROR: Failed to process anime 28977: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=28977, endpoint=anime
+2025-02-08 22:08:34,839 - WARNING: Anime Error: {'mal_id': 28977, 'title': 'Gintama°', 'error_message': 'HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=28977, endpoint=anime'}
+2025-02-08 22:08:35,044 - ERROR: Failed to process anime 39486: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=39486, endpoint=anime
+2025-02-08 22:08:35,044 - WARNING: Anime Error: {'mal_id': 39486, 'title': 'Gintama: The Final', 'error_message': 'HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=39486, endpoint=anime'}
+2025-02-08 22:08:35,249 - ERROR: Failed to process anime 11061: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=11061, endpoint=anime
+2025-02-08 22:08:35,249 - WARNING: Anime Error: {'mal_id': 11061, 'title': 'Hunter x Hunter (2011)', 'error_message': 'HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=11061, endpoint=anime'}
+2025-02-08 22:08:35,663 - ERROR: Failed to process anime 15417: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=15417, endpoint=anime
+2025-02-08 22:08:35,663 - WARNING: Anime Error: {'mal_id': 15417, 'title': "Gintama': Enchousen", 'error_message': 'HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=15417, endpoint=anime'}
+2025-02-08 22:08:35,867 - ERROR: Failed to process anime 820: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=820, endpoint=anime
+2025-02-08 22:08:35,867 - WARNING: Anime Error: {'mal_id': 820, 'title': 'Ginga Eiyuu Densetsu', 'error_message': 'HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=820, endpoint=anime'}
+2025-02-08 22:08:36,071 - ERROR: Failed to process anime 41467: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=41467, endpoint=anime
+2025-02-08 22:08:36,072 - WARNING: Anime Error: {'mal_id': 41467, 'title': 'Bleach: Sennen Kessen-hen', 'error_message': 'HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=41467, endpoint=anime'}
+2025-02-08 22:08:36,276 - ERROR: Failed to process anime 43608: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=43608, endpoint=anime
+2025-02-08 22:08:36,276 - WARNING: Anime Error: {'mal_id': 43608, 'title': 'Kaguya-sama wa Kokurasetai: Ultra Romantic', 'error_message': 'HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=43608, endpoint=anime'}
+2025-02-08 22:08:36,685 - ERROR: Failed to process anime 42938: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=42938, endpoint=anime
+2025-02-08 22:08:36,685 - WARNING: Anime Error: {'mal_id': 42938, 'title': 'Fruits Basket: The Final', 'error_message': 'HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=42938, endpoint=anime'}
+2025-02-08 22:08:36,891 - ERROR: Failed to process anime 4181: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=4181, endpoint=anime
+2025-02-08 22:08:36,891 - WARNING: Anime Error: {'mal_id': 4181, 'title': 'Clannad: After Story', 'error_message': 'HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=4181, endpoint=anime'}
+2025-02-08 22:08:37,097 - ERROR: Failed to process anime 918: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=918, endpoint=anime
+2025-02-08 22:08:37,098 - WARNING: Anime Error: {'mal_id': 918, 'title': 'Gintama', 'error_message': 'HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=918, endpoint=anime'}
+2025-02-08 22:08:37,303 - ERROR: Failed to process anime 28851: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=28851, endpoint=anime
+2025-02-08 22:08:37,304 - WARNING: Anime Error: {'mal_id': 28851, 'title': 'Koe no Katachi', 'error_message': 'HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=28851, endpoint=anime'}
+2025-02-08 22:08:37,714 - ERROR: Failed to process anime 2904: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=2904, endpoint=anime
+2025-02-08 22:08:37,714 - WARNING: Anime Error: {'mal_id': 2904, 'title': 'Code Geass: Hangyaku no Lelouch R2', 'error_message': 'HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=2904, endpoint=anime'}
+2025-02-08 22:08:37,918 - ERROR: Failed to process anime 15335: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=15335, endpoint=anime
+2025-02-08 22:08:37,919 - WARNING: Anime Error: {'mal_id': 15335, 'title': 'Gintama Movie 2: Kanketsu-hen - Yorozuya yo Eien Nare', 'error_message': 'HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=15335, endpoint=anime'}
+2025-02-08 22:08:38,126 - ERROR: Failed to process anime 54492: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=54492, endpoint=anime
+2025-02-08 22:08:38,127 - WARNING: Anime Error: {'mal_id': 54492, 'title': 'Kusuriya no Hitorigoto', 'error_message': 'HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=54492, endpoint=anime'}
+2025-02-08 22:08:38,334 - ERROR: Failed to process anime 37491: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=37491, endpoint=anime
+2025-02-08 22:08:38,335 - WARNING: Anime Error: {'mal_id': 37491, 'title': 'Gintama. Shirogane no Tamashii-hen - Kouhan-sen', 'error_message': 'HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=37491, endpoint=anime'}
+2025-02-08 22:08:38,753 - ERROR: Failed to process anime 51535: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=51535, endpoint=anime
+2025-02-08 22:08:38,754 - WARNING: Anime Error: {'mal_id': 51535, 'title': 'Shingeki no Kyojin: The Final Season - Kanketsu-hen', 'error_message': 'HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=51535, endpoint=anime'}
+2025-02-08 22:10:06,726 - ERROR: Page 1 collection error: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:10:06,729 - ERROR: Page 1 collection error: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:10:06,731 - ERROR: Collection process failed: 'genres'
+2025-02-08 22:10:40,233 - ERROR: Page 1 collection error: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=9253, endpoint=anime
+2025-02-08 22:10:40,674 - ERROR: Page 1 collection error: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=52991, endpoint=anime
+2025-02-08 22:10:40,676 - ERROR: Collection process failed: 'genres'
+2025-02-08 22:10:53,158 - ERROR: Page 1 collection error: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=9253, endpoint=anime
+2025-02-08 22:10:53,584 - ERROR: Page 1 collection error: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=52991, endpoint=anime
+2025-02-08 22:10:53,585 - ERROR: Collection process failed: 'genres'
+2025-02-08 22:12:12,486 - ERROR: Error fetching top anime page 1: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:12:12,486 - ERROR: Error fetching top anime page 2: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:12:12,487 - ERROR: Error fetching top anime page 3: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:12:12,490 - INFO: Waiting 1.00 seconds to comply with per-second limit
+2025-02-08 22:12:13,488 - ERROR: Error fetching top anime page 1: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:12:13,488 - ERROR: Error fetching top anime page 2: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:12:13,489 - ERROR: Error fetching top anime page 3: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:12:13,491 - ERROR: Collection process failed: 'genres'
+2025-02-08 22:12:34,774 - ERROR: Error processing anime 9253: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=9253, endpoint=anime
+2025-02-08 22:12:34,774 - INFO: Waiting 0.36 seconds to comply with per-second limit
+2025-02-08 22:12:35,344 - INFO: Waiting 0.00 seconds to comply with per-second limit
+2025-02-08 22:12:35,559 - ERROR: Error processing anime 38524: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=38524, endpoint=anime
+2025-02-08 22:12:35,769 - ERROR: Error processing anime 28977: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=28977, endpoint=anime
+2025-02-08 22:12:35,769 - INFO: Waiting 0.36 seconds to comply with per-second limit
+2025-02-08 22:12:36,559 - ERROR: Error processing anime 11061: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=11061, endpoint=anime
+2025-02-08 22:12:36,559 - INFO: Waiting 0.00 seconds to comply with per-second limit
+2025-02-08 22:12:36,770 - ERROR: Error processing anime 9969: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=9969, endpoint=anime
+2025-02-08 22:12:36,771 - INFO: Waiting 0.36 seconds to comply with per-second limit
+2025-02-08 22:12:37,342 - INFO: Waiting 0.01 seconds to comply with per-second limit
+2025-02-08 22:12:37,562 - ERROR: Error processing anime 820: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=820, endpoint=anime
+2025-02-08 22:12:37,778 - ERROR: Error processing anime 41467: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=41467, endpoint=anime
+2025-02-08 22:12:37,778 - INFO: Waiting 0.35 seconds to comply with per-second limit
+2025-02-08 22:12:38,345 - INFO: Waiting 0.01 seconds to comply with per-second limit
+2025-02-08 22:12:38,569 - ERROR: Error processing anime 34096: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=34096, endpoint=anime
+2025-02-08 22:12:38,778 - ERROR: Error processing anime 42938: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=42938, endpoint=anime
+2025-02-08 22:12:38,778 - INFO: Waiting 0.36 seconds to comply with per-second limit
+2025-02-08 22:12:39,345 - INFO: Waiting 0.01 seconds to comply with per-second limit
+2025-02-08 22:12:39,563 - ERROR: Error processing anime 918: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=918, endpoint=anime
+2025-02-08 22:12:39,563 - INFO: Waiting 0.01 seconds to comply with per-second limit
+2025-02-08 22:12:39,778 - ERROR: Error processing anime 28851: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=28851, endpoint=anime
+2025-02-08 22:12:39,779 - INFO: Waiting 0.35 seconds to comply with per-second limit
+2025-02-08 22:12:40,352 - INFO: Waiting 0.00 seconds to comply with per-second limit
+2025-02-08 22:12:40,564 - ERROR: Error processing anime 2904: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=2904, endpoint=anime
+2025-02-08 22:12:40,564 - INFO: Waiting 0.01 seconds to comply with per-second limit
+2025-02-08 22:12:40,782 - ERROR: Error processing anime 15335: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=15335, endpoint=anime
+2025-02-08 22:12:40,782 - INFO: Waiting 0.35 seconds to comply with per-second limit
+2025-02-08 22:12:41,717 - ERROR: Error processing anime 37491: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=37491, endpoint=anime
+2025-02-08 22:12:41,939 - INFO: Waiting 0.20 seconds to comply with per-second limit
+2025-02-08 22:12:42,351 - ERROR: Error processing anime 51535: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=51535, endpoint=anime
+2025-02-08 22:12:42,351 - INFO: Waiting 0.14 seconds to comply with per-second limit
+2025-02-08 22:12:42,712 - ERROR: Error fetching top anime page 2: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for type=anime
+2025-02-08 22:12:42,713 - INFO: Waiting 0.00 seconds to comply with per-second limit
+2025-02-08 22:12:43,410 - ERROR: Error processing anime 45649: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=45649, endpoint=anime
+2025-02-08 22:12:43,411 - INFO: Waiting 0.09 seconds to comply with per-second limit
+2025-02-08 22:12:43,714 - ERROR: Error processing anime 50160: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=50160, endpoint=anime
+2025-02-08 22:12:43,714 - INFO: Waiting 0.00 seconds to comply with per-second limit
+2025-02-08 22:12:43,934 - INFO: Waiting 0.26 seconds to comply with per-second limit
+2025-02-08 22:12:44,413 - ERROR: Error processing anime 21: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=21, endpoint=anime
+2025-02-08 22:12:44,413 - INFO: Waiting 0.09 seconds to comply with per-second limit
+2025-02-08 22:12:44,715 - ERROR: Error processing anime 47778: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=47778, endpoint=anime
+2025-02-08 22:12:44,716 - INFO: Waiting 0.00 seconds to comply with per-second limit
+2025-02-08 22:12:45,085 - INFO: Waiting 0.11 seconds to comply with per-second limit
+2025-02-08 22:12:45,412 - ERROR: Error processing anime 39894: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=39894, endpoint=anime
+2025-02-08 22:12:45,412 - INFO: Waiting 0.09 seconds to comply with per-second limit
+2025-02-08 22:12:45,722 - ERROR: Error processing anime 24701: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=24701, endpoint=anime
+2025-02-08 22:12:45,937 - INFO: Waiting 0.26 seconds to comply with per-second limit
+2025-02-08 22:12:46,416 - ERROR: Error processing anime 48569: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=48569, endpoint=anime
+2025-02-08 22:12:46,417 - INFO: Waiting 0.08 seconds to comply with per-second limit
+2025-02-08 22:12:46,718 - ERROR: Error processing anime 57864: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=57864, endpoint=anime
+2025-02-08 22:12:46,718 - INFO: Waiting 0.00 seconds to comply with per-second limit
+2025-02-08 22:12:47,093 - INFO: Waiting 0.10 seconds to comply with per-second limit
+2025-02-08 22:12:47,412 - ERROR: Error processing anime 53998: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=53998, endpoint=anime
+2025-02-08 22:12:47,413 - INFO: Waiting 0.09 seconds to comply with per-second limit
+2025-02-08 22:12:47,717 - ERROR: Error processing anime 33095: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=33095, endpoint=anime
+2025-02-08 22:12:47,717 - INFO: Waiting 0.01 seconds to comply with per-second limit
+2025-02-08 22:12:47,984 - INFO: Waiting 0.21 seconds to comply with per-second limit
+2025-02-08 22:12:48,414 - ERROR: Error processing anime 44: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=44, endpoint=anime
+2025-02-08 22:12:48,415 - INFO: Waiting 0.09 seconds to comply with per-second limit
+2025-02-08 22:12:48,720 - ERROR: Error processing anime 21939: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=21939, endpoint=anime
+2025-02-08 22:12:48,721 - INFO: Waiting 0.00 seconds to comply with per-second limit
+2025-02-08 22:12:49,090 - INFO: Waiting 0.11 seconds to comply with per-second limit
+2025-02-08 22:12:49,413 - ERROR: Error processing anime 33352: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=33352, endpoint=anime
+2025-02-08 22:12:49,413 - INFO: Waiting 0.09 seconds to comply with per-second limit
+2025-02-08 22:12:49,720 - ERROR: Error processing anime 245: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=245, endpoint=anime
+2025-02-08 22:12:49,720 - INFO: Waiting 0.01 seconds to comply with per-second limit
+2025-02-08 22:12:50,122 - INFO: Waiting 0.08 seconds to comply with per-second limit
+2025-02-08 22:12:50,416 - ERROR: Error processing anime 58125: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=58125, endpoint=anime
+2025-02-08 22:12:50,417 - INFO: Waiting 0.09 seconds to comply with per-second limit
+2025-02-08 22:12:50,727 - ERROR: Error processing anime 5258: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=5258, endpoint=anime
+2025-02-08 22:12:50,727 - INFO: Waiting 0.00 seconds to comply with per-second limit
+2025-02-08 22:12:51,093 - INFO: Waiting 0.11 seconds to comply with per-second limit
+2025-02-08 22:12:51,415 - ERROR: Error processing anime 50399: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=50399, endpoint=anime
+2025-02-08 22:12:51,417 - INFO: Waiting 0.09 seconds to comply with per-second limit
+2025-02-08 22:12:51,723 - ERROR: Error fetching top anime page 1: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for type=anime
+2025-02-08 22:12:51,724 - INFO: Waiting 0.00 seconds to comply with per-second limit
+2025-02-08 22:12:52,163 - INFO: Waiting 0.04 seconds to comply with per-second limit
+2025-02-08 22:12:52,418 - ERROR: Error processing anime 35247: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=35247, endpoint=anime
+2025-02-08 22:12:52,419 - INFO: Waiting 0.09 seconds to comply with per-second limit
+2025-02-08 22:12:52,725 - ERROR: Error processing anime 37987: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=37987, endpoint=anime
+2025-02-08 22:12:52,725 - INFO: Waiting 0.00 seconds to comply with per-second limit
+2025-02-08 22:12:52,947 - INFO: Waiting 0.26 seconds to comply with per-second limit
+2025-02-08 22:12:53,421 - ERROR: Error processing anime 32281: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=32281, endpoint=anime
+2025-02-08 22:12:53,422 - INFO: Waiting 0.09 seconds to comply with per-second limit
+2025-02-08 22:12:53,725 - ERROR: Error processing anime 58567: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=58567, endpoint=anime
+2025-02-08 22:12:53,727 - INFO: Waiting 0.01 seconds to comply with per-second limit
+2025-02-08 22:12:53,732 - INFO: Waiting 39.50 seconds to comply with per-minute limit
+2025-02-08 22:13:33,443 - INFO: Waiting 0.69 seconds to comply with per-minute limit
+2025-02-08 22:13:34,343 - INFO: Waiting 0.00 seconds to comply with per-minute limit
+2025-02-08 22:13:34,551 - INFO: Waiting 0.00 seconds to comply with per-minute limit
+2025-02-08 22:13:34,764 - INFO: Waiting 0.37 seconds to comply with per-second limit
+2025-02-08 22:13:35,133 - INFO: Waiting 0.37 seconds to comply with per-minute limit
+2025-02-08 22:13:35,916 - ERROR: Error processing anime 263: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=263, endpoint=anime
+2025-02-08 22:13:36,122 - ERROR: Error processing anime 55690: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=55690, endpoint=anime
+2025-02-08 22:13:36,123 - INFO: Waiting 0.38 seconds to comply with per-second limit
+2025-02-08 22:13:36,503 - INFO: Waiting 0.01 seconds to comply with per-minute limit
+2025-02-08 22:13:36,932 - ERROR: Error processing anime 199: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=199, endpoint=anime
+2025-02-08 22:13:37,139 - ERROR: Error processing anime 51009: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=51009, endpoint=anime
+2025-02-08 22:13:37,140 - INFO: Waiting 0.37 seconds to comply with per-second limit
+2025-02-08 22:13:37,929 - ERROR: Error processing anime 47917: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=47917, endpoint=anime
+2025-02-08 22:13:37,929 - INFO: Waiting 0.00 seconds to comply with per-second limit
+2025-02-08 22:13:38,143 - ERROR: Error processing anime 37521: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=37521, endpoint=anime
+2025-02-08 22:13:38,143 - INFO: Waiting 0.37 seconds to comply with per-second limit
+2025-02-08 22:13:38,934 - ERROR: Error processing anime 58514: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=58514, endpoint=anime
+2025-02-08 22:13:39,141 - ERROR: Error processing anime 1: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=1, endpoint=anime
+2025-02-08 22:13:39,141 - INFO: Waiting 0.37 seconds to comply with per-second limit
+2025-02-08 22:13:39,723 - INFO: Waiting 0.00 seconds to comply with per-second limit
+2025-02-08 22:13:39,933 - ERROR: Error processing anime 52198: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=52198, endpoint=anime
+2025-02-08 22:13:39,933 - INFO: Waiting 0.00 seconds to comply with per-second limit
+2025-02-08 22:13:40,143 - ERROR: Error processing anime 2921: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for id=2921, endpoint=anime
+2025-02-08 22:13:40,144 - INFO: Waiting 0.37 seconds to comply with per-second limit
+2025-02-08 22:13:40,727 - INFO: Waiting 0.00 seconds to comply with per-second limit
+2025-02-08 22:13:40,936 - ERROR: Error fetching top anime page 3: HTTP 429 - status=429, type=RateLimitException, message=You are being rate-limited. Please follow Rate Limiting guidelines: https://docs.api.jikan.moe/#section/Information/Rate-Limiting, error=None for type=anime
+2025-02-08 22:13:40,938 - ERROR: Collection process failed: 'genres'
+2025-02-08 22:14:18,230 - INFO: Waiting 4.04 seconds to prevent rate limiting
+2025-02-08 22:14:22,274 - ERROR: Top anime fetch attempt 1 failed: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:14:22,274 - WARNING: Rate Limit Incident: Top anime fetch attempt 1 failed: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:14:32,959 - ERROR: Top anime fetch attempt 2 failed: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:14:32,959 - WARNING: Rate Limit Incident: Top anime fetch attempt 2 failed: Jikan.top() got an unexpected keyword argument 'filter'
+2025-02-08 22:15:09,586 - INFO: Waiting 4.51 seconds to prevent rate limiting
+2025-02-08 22:15:15,006 - INFO: Waiting 5.37 seconds to prevent rate limiting
+2025-02-08 22:15:20,586 - INFO: Waiting 3.86 seconds to prevent rate limiting
+2025-02-08 22:15:24,667 - INFO: Waiting 4.53 seconds to prevent rate limiting
+2025-02-08 22:15:29,410 - INFO: Waiting 6.67 seconds to prevent rate limiting
+2025-02-08 22:15:36,305 - INFO: Waiting 5.39 seconds to prevent rate limiting
+2025-02-08 22:15:41,905 - INFO: Waiting 3.92 seconds to prevent rate limiting
+2025-02-08 22:15:46,047 - INFO: Waiting 5.86 seconds to prevent rate limiting
+2025-02-08 22:15:52,115 - INFO: Waiting 3.29 seconds to prevent rate limiting
+2025-02-08 22:15:55,620 - INFO: Waiting 4.80 seconds to prevent rate limiting
+2025-02-08 22:16:00,632 - INFO: Waiting 3.35 seconds to prevent rate limiting
+2025-02-08 22:16:04,199 - INFO: Waiting 6.11 seconds to prevent rate limiting
+2025-02-08 22:16:10,523 - INFO: Waiting 6.57 seconds to prevent rate limiting
+2025-02-08 22:16:17,308 - INFO: Waiting 4.45 seconds to prevent rate limiting
+2025-02-08 22:16:21,966 - INFO: Waiting 5.28 seconds to prevent rate limiting
+2025-02-08 22:16:27,548 - INFO: Waiting 4.92 seconds to prevent rate limiting
+2025-02-08 22:16:32,680 - INFO: Waiting 6.20 seconds to prevent rate limiting
+2025-02-08 22:16:39,094 - INFO: Waiting 4.12 seconds to prevent rate limiting
+2025-02-08 22:16:43,430 - INFO: Waiting 6.10 seconds to prevent rate limiting
+2025-02-08 22:16:49,744 - INFO: Waiting 6.17 seconds to prevent rate limiting
+2025-02-08 22:16:56,131 - INFO: Waiting 5.90 seconds to prevent rate limiting
+2025-02-08 22:17:02,239 - INFO: Waiting 4.15 seconds to prevent rate limiting
+2025-02-08 22:17:06,602 - INFO: Waiting 5.43 seconds to prevent rate limiting
+2025-02-08 22:17:12,244 - INFO: Waiting 5.19 seconds to prevent rate limiting
+2025-02-08 22:17:17,641 - INFO: Waiting 5.70 seconds to prevent rate limiting
+2025-02-08 22:17:23,551 - INFO: Waiting 5.77 seconds to prevent rate limiting
+2025-02-08 22:17:29,538 - INFO: Waiting 6.31 seconds to prevent rate limiting
+2025-02-08 22:17:36,296 - INFO: Waiting 6.00 seconds to prevent rate limiting
+2025-02-08 22:17:42,508 - INFO: Waiting 5.38 seconds to prevent rate limiting
+2025-02-08 22:17:48,103 - INFO: Waiting 3.84 seconds to prevent rate limiting
+2025-02-08 22:17:52,154 - INFO: Waiting 6.24 seconds to prevent rate limiting
+2025-02-08 22:17:58,608 - INFO: Waiting 6.48 seconds to prevent rate limiting
+2025-02-08 22:18:05,295 - INFO: Waiting 4.91 seconds to prevent rate limiting
+2025-02-08 22:18:10,429 - INFO: Waiting 4.74 seconds to prevent rate limiting
+2025-02-08 22:18:15,382 - INFO: Waiting 6.46 seconds to prevent rate limiting
+2025-02-08 22:18:22,054 - INFO: Waiting 4.01 seconds to prevent rate limiting
+2025-02-08 22:18:26,277 - INFO: Waiting 3.46 seconds to prevent rate limiting
+2025-02-08 22:18:30,092 - INFO: Waiting 3.31 seconds to prevent rate limiting
+2025-02-08 22:18:33,609 - INFO: Waiting 5.76 seconds to prevent rate limiting
+2025-02-08 22:18:39,653 - INFO: Waiting 4.76 seconds to prevent rate limiting
+2025-02-08 22:18:44,621 - INFO: Waiting 3.17 seconds to prevent rate limiting
+2025-02-08 22:18:48,032 - INFO: Waiting 6.59 seconds to prevent rate limiting
+2025-02-08 22:18:54,846 - INFO: Waiting 4.88 seconds to prevent rate limiting
+2025-02-08 22:18:59,943 - INFO: Waiting 5.96 seconds to prevent rate limiting
+2025-02-08 22:19:06,126 - INFO: Waiting 3.42 seconds to prevent rate limiting
+2025-02-08 22:19:09,765 - INFO: Waiting 6.51 seconds to prevent rate limiting
+2025-02-08 22:19:16,490 - INFO: Waiting 5.90 seconds to prevent rate limiting
+2025-02-08 22:19:22,757 - INFO: Waiting 3.73 seconds to prevent rate limiting
+2025-02-08 22:19:26,710 - INFO: Waiting 6.96 seconds to prevent rate limiting
+2025-02-08 22:19:33,902 - INFO: Waiting 3.39 seconds to prevent rate limiting
+2025-02-08 22:19:37,512 - INFO: Waiting 5.33 seconds to prevent rate limiting
+2025-02-08 22:19:43,064 - INFO: Waiting 5.30 seconds to prevent rate limiting
+2025-02-08 22:19:48,581 - INFO: Waiting 3.73 seconds to prevent rate limiting
+2025-02-08 22:19:52,751 - INFO: Waiting 4.63 seconds to prevent rate limiting
+2025-02-08 22:19:57,760 - INFO: Waiting 6.82 seconds to prevent rate limiting
+2025-02-08 22:20:04,791 - INFO: Waiting 5.66 seconds to prevent rate limiting
+2025-02-08 22:20:10,658 - INFO: Waiting 3.19 seconds to prevent rate limiting
+2025-02-08 22:20:14,062 - INFO: Waiting 5.35 seconds to prevent rate limiting
+2025-02-08 22:20:19,622 - INFO: Waiting 6.41 seconds to prevent rate limiting
+2025-02-08 22:20:26,238 - INFO: Waiting 4.80 seconds to prevent rate limiting
+2025-02-08 22:20:31,263 - INFO: Waiting 3.02 seconds to prevent rate limiting
+2025-02-08 22:20:34,490 - INFO: Waiting 4.88 seconds to prevent rate limiting
+2025-02-08 22:20:39,579 - INFO: Waiting 4.73 seconds to prevent rate limiting
+2025-02-08 22:20:44,519 - INFO: Waiting 6.51 seconds to prevent rate limiting
+2025-02-08 22:20:51,242 - INFO: Waiting 6.16 seconds to prevent rate limiting
+2025-02-08 22:20:57,617 - INFO: Waiting 6.46 seconds to prevent rate limiting
+2025-02-08 22:21:04,848 - INFO: Waiting 3.60 seconds to prevent rate limiting
+2025-02-08 22:21:08,661 - INFO: Waiting 3.09 seconds to prevent rate limiting
+2025-02-08 22:21:11,968 - INFO: Waiting 3.12 seconds to prevent rate limiting
+2025-02-08 22:21:15,438 - INFO: Waiting 3.08 seconds to prevent rate limiting
+2025-02-08 22:21:18,728 - INFO: Waiting 6.70 seconds to prevent rate limiting
+2025-02-08 22:21:25,684 - INFO: Waiting 4.01 seconds to prevent rate limiting
+2025-02-08 22:21:29,915 - INFO: Waiting 4.58 seconds to prevent rate limiting
+2025-02-08 22:21:34,708 - INFO: Waiting 3.92 seconds to prevent rate limiting
+2025-02-08 22:21:38,843 - INFO: Waiting 3.25 seconds to prevent rate limiting
+2025-02-08 22:21:42,306 - INFO: Waiting 3.87 seconds to prevent rate limiting
+2025-02-08 22:21:46,389 - INFO: Waiting 3.42 seconds to prevent rate limiting
+2025-02-08 22:21:50,036 - INFO: Waiting 4.22 seconds to prevent rate limiting
+2025-02-08 22:21:54,472 - INFO: Waiting 5.22 seconds to prevent rate limiting
+2025-02-08 22:22:00,125 - INFO: Waiting 4.32 seconds to prevent rate limiting
+2025-02-08 22:22:04,664 - INFO: Waiting 5.15 seconds to prevent rate limiting
+2025-02-08 22:22:10,027 - INFO: Waiting 4.83 seconds to prevent rate limiting
+2025-02-08 22:22:15,075 - INFO: Waiting 3.66 seconds to prevent rate limiting
+2025-02-08 22:22:19,053 - INFO: Waiting 3.50 seconds to prevent rate limiting
+2025-02-08 22:22:22,777 - INFO: Waiting 6.96 seconds to prevent rate limiting
+2025-02-08 22:22:29,949 - INFO: Waiting 4.51 seconds to prevent rate limiting
+2025-02-08 22:22:34,678 - INFO: Waiting 3.19 seconds to prevent rate limiting
+2025-02-08 22:22:38,078 - INFO: Waiting 6.48 seconds to prevent rate limiting
+2025-02-08 22:22:44,772 - INFO: Waiting 5.09 seconds to prevent rate limiting
+2025-02-08 22:22:50,075 - INFO: Waiting 6.76 seconds to prevent rate limiting
+2025-02-08 22:22:57,060 - INFO: Waiting 3.20 seconds to prevent rate limiting
+2025-02-08 22:23:00,468 - INFO: Waiting 6.98 seconds to prevent rate limiting
+2025-02-08 22:23:07,662 - INFO: Waiting 3.84 seconds to prevent rate limiting
+2025-02-08 22:23:11,724 - INFO: Waiting 5.17 seconds to prevent rate limiting
+2025-02-08 22:23:17,124 - INFO: Waiting 5.92 seconds to prevent rate limiting
+2025-02-08 22:23:23,276 - INFO: Waiting 4.12 seconds to prevent rate limiting
+2025-02-08 22:23:27,611 - INFO: Waiting 6.54 seconds to prevent rate limiting
+2025-02-08 22:23:34,362 - INFO: Waiting 5.50 seconds to prevent rate limiting
+2025-02-08 22:23:40,073 - INFO: Waiting 5.61 seconds to prevent rate limiting
+2025-02-08 22:23:45,895 - INFO: Waiting 6.25 seconds to prevent rate limiting
+2025-02-08 22:23:52,479 - INFO: Waiting 5.92 seconds to prevent rate limiting
+2025-02-08 22:23:58,608 - INFO: Waiting 4.70 seconds to prevent rate limiting
+2025-02-08 22:24:03,521 - INFO: Waiting 5.27 seconds to prevent rate limiting
+2025-02-08 22:24:09,004 - INFO: Waiting 5.73 seconds to prevent rate limiting
+2025-02-08 22:24:14,960 - ERROR: Collection process failed: 'genres'
+2025-02-08 22:25:22,382 - INFO: Waiting 3.25 seconds to prevent rate limiting
+2025-02-08 22:25:26,520 - INFO: Waiting 3.68 seconds to prevent rate limiting
+2025-02-08 22:25:30,406 - INFO: Waiting 3.72 seconds to prevent rate limiting
+2025-02-08 22:25:34,384 - INFO: Waiting 5.24 seconds to prevent rate limiting
+2025-02-08 22:25:39,837 - INFO: Waiting 4.43 seconds to prevent rate limiting
+2025-02-08 22:25:44,623 - INFO: Waiting 5.65 seconds to prevent rate limiting
+2025-02-08 22:25:50,486 - INFO: Waiting 6.19 seconds to prevent rate limiting
+2025-02-08 22:25:56,891 - INFO: Waiting 6.37 seconds to prevent rate limiting
+2025-02-08 22:26:03,484 - INFO: Waiting 4.85 seconds to prevent rate limiting
+2025-02-08 22:26:08,550 - INFO: Waiting 3.56 seconds to prevent rate limiting
+2025-02-08 22:26:12,335 - INFO: Waiting 3.45 seconds to prevent rate limiting
+2025-02-08 22:26:15,994 - INFO: Waiting 3.06 seconds to prevent rate limiting
+2025-02-08 22:26:19,273 - INFO: Waiting 5.80 seconds to prevent rate limiting
+2025-02-08 22:26:25,287 - INFO: Waiting 4.31 seconds to prevent rate limiting
+2025-02-08 22:26:29,808 - INFO: Waiting 5.99 seconds to prevent rate limiting
+2025-02-08 22:26:36,012 - INFO: Waiting 6.24 seconds to prevent rate limiting
+2025-02-08 22:26:42,467 - INFO: Waiting 5.63 seconds to prevent rate limiting
+2025-02-08 22:26:48,308 - INFO: Waiting 6.17 seconds to prevent rate limiting
+2025-02-08 22:26:54,701 - INFO: Waiting 4.46 seconds to prevent rate limiting
+2025-02-08 22:26:59,372 - INFO: Waiting 3.97 seconds to prevent rate limiting
+2025-02-08 22:27:03,601 - INFO: Waiting 6.77 seconds to prevent rate limiting
+2025-02-08 22:27:10,581 - INFO: Waiting 6.66 seconds to prevent rate limiting
+2025-02-08 22:27:17,462 - INFO: Waiting 6.06 seconds to prevent rate limiting
+2025-02-08 22:27:23,738 - INFO: Waiting 6.44 seconds to prevent rate limiting
+2025-02-08 22:27:30,390 - INFO: Waiting 6.12 seconds to prevent rate limiting
+2025-02-08 22:27:36,725 - INFO: Waiting 5.60 seconds to prevent rate limiting
+2025-02-08 22:27:42,539 - INFO: Waiting 5.48 seconds to prevent rate limiting
+2025-02-08 22:27:48,455 - INFO: Waiting 6.01 seconds to prevent rate limiting
+2025-02-08 22:27:54,733 - INFO: Waiting 5.33 seconds to prevent rate limiting
+2025-02-08 22:28:00,276 - INFO: Waiting 3.37 seconds to prevent rate limiting
+2025-02-08 22:28:03,859 - INFO: Waiting 6.93 seconds to prevent rate limiting
+2025-02-08 22:28:11,011 - INFO: Waiting 3.05 seconds to prevent rate limiting
+2025-02-08 22:28:14,275 - INFO: Waiting 5.78 seconds to prevent rate limiting
+2025-02-08 22:28:20,281 - INFO: Waiting 3.29 seconds to prevent rate limiting
+2025-02-08 22:28:23,785 - INFO: Waiting 4.69 seconds to prevent rate limiting
+2025-02-08 22:28:28,688 - INFO: Waiting 3.53 seconds to prevent rate limiting
+2025-02-08 22:28:32,435 - INFO: Waiting 5.86 seconds to prevent rate limiting
+2025-02-08 22:28:38,509 - INFO: Waiting 3.57 seconds to prevent rate limiting
+2025-02-08 22:28:42,448 - INFO: Waiting 6.98 seconds to prevent rate limiting
+2025-02-08 22:28:49,645 - INFO: Waiting 3.68 seconds to prevent rate limiting
+2025-02-08 22:28:53,538 - INFO: Waiting 3.01 seconds to prevent rate limiting
+2025-02-08 22:28:56,781 - INFO: Waiting 6.16 seconds to prevent rate limiting
+2025-02-08 22:29:03,153 - INFO: Waiting 4.03 seconds to prevent rate limiting
+2025-02-08 22:29:07,392 - INFO: Waiting 4.53 seconds to prevent rate limiting
+2025-02-08 22:29:12,137 - INFO: Waiting 4.57 seconds to prevent rate limiting
+2025-02-08 22:29:16,918 - INFO: Waiting 5.15 seconds to prevent rate limiting
+2025-02-08 22:29:22,276 - INFO: Waiting 3.73 seconds to prevent rate limiting
+2025-02-08 22:29:26,216 - INFO: Waiting 4.13 seconds to prevent rate limiting
+2025-02-08 22:29:30,562 - INFO: Waiting 4.70 seconds to prevent rate limiting
+2025-02-08 22:29:35,475 - INFO: Waiting 6.78 seconds to prevent rate limiting
+2025-02-08 22:29:42,474 - INFO: Waiting 6.61 seconds to prevent rate limiting
+2025-02-08 22:29:49,300 - INFO: Waiting 4.34 seconds to prevent rate limiting
+2025-02-08 22:29:53,866 - INFO: Waiting 5.32 seconds to prevent rate limiting
+2025-02-08 22:29:59,615 - INFO: Waiting 4.28 seconds to prevent rate limiting
+2025-02-08 22:30:04,260 - INFO: Waiting 3.14 seconds to prevent rate limiting
+2025-02-08 22:30:07,720 - INFO: Waiting 3.60 seconds to prevent rate limiting
+2025-02-08 22:30:11,534 - INFO: Waiting 6.06 seconds to prevent rate limiting
+2025-02-08 22:30:17,804 - INFO: Waiting 5.17 seconds to prevent rate limiting
+2025-02-08 22:30:23,184 - INFO: Waiting 3.92 seconds to prevent rate limiting
+2025-02-08 22:30:27,329 - INFO: Waiting 3.45 seconds to prevent rate limiting
+2025-02-08 22:30:30,991 - INFO: Waiting 6.03 seconds to prevent rate limiting
+2025-02-08 22:30:37,270 - INFO: Waiting 6.43 seconds to prevent rate limiting
+2025-02-08 22:30:43,915 - INFO: Waiting 5.35 seconds to prevent rate limiting
+2025-02-08 22:30:49,478 - INFO: Waiting 5.54 seconds to prevent rate limiting
+2025-02-08 22:30:55,232 - INFO: Waiting 3.83 seconds to prevent rate limiting
+2025-02-08 22:30:59,273 - INFO: Waiting 4.15 seconds to prevent rate limiting
+2025-02-08 22:31:03,711 - INFO: Waiting 6.62 seconds to prevent rate limiting
+2025-02-08 22:31:10,558 - INFO: Waiting 3.90 seconds to prevent rate limiting
+2025-02-08 22:31:14,670 - INFO: Waiting 5.39 seconds to prevent rate limiting
+2025-02-08 22:31:20,628 - INFO: Waiting 3.50 seconds to prevent rate limiting
+2025-02-08 22:31:24,524 - INFO: Waiting 6.55 seconds to prevent rate limiting
+2025-02-08 22:31:31,296 - INFO: Waiting 6.76 seconds to prevent rate limiting
+2025-02-08 22:31:38,269 - INFO: Waiting 5.41 seconds to prevent rate limiting
+2025-02-08 22:31:43,903 - INFO: Waiting 3.75 seconds to prevent rate limiting
+2025-02-08 22:31:47,874 - INFO: Waiting 3.38 seconds to prevent rate limiting
+2025-02-08 22:31:51,474 - INFO: Waiting 3.73 seconds to prevent rate limiting
+2025-02-08 22:31:55,419 - INFO: Waiting 3.43 seconds to prevent rate limiting
+2025-02-08 22:31:59,073 - INFO: Waiting 3.43 seconds to prevent rate limiting
+2025-02-08 22:32:02,712 - INFO: Waiting 3.81 seconds to prevent rate limiting
+2025-02-08 22:32:06,959 - INFO: Waiting 3.61 seconds to prevent rate limiting
+2025-02-08 22:32:10,782 - INFO: Waiting 6.96 seconds to prevent rate limiting
+2025-02-08 22:32:17,956 - INFO: Waiting 4.51 seconds to prevent rate limiting
+2025-02-08 22:32:22,674 - INFO: Waiting 4.77 seconds to prevent rate limiting
+2025-02-08 22:32:27,654 - INFO: Waiting 5.26 seconds to prevent rate limiting
+2025-02-08 22:32:33,131 - INFO: Waiting 4.58 seconds to prevent rate limiting
+2025-02-08 22:32:37,933 - INFO: Waiting 6.36 seconds to prevent rate limiting
+2025-02-08 22:32:44,503 - INFO: Waiting 6.21 seconds to prevent rate limiting
+2025-02-08 22:32:50,937 - INFO: Waiting 4.00 seconds to prevent rate limiting
+2025-02-08 22:32:55,163 - INFO: Waiting 5.86 seconds to prevent rate limiting
+2025-02-08 22:33:01,234 - INFO: Waiting 5.95 seconds to prevent rate limiting
+2025-02-08 22:33:07,395 - INFO: Waiting 3.35 seconds to prevent rate limiting
+2025-02-08 22:33:10,953 - INFO: Waiting 5.76 seconds to prevent rate limiting
+2025-02-08 22:33:16,998 - INFO: Waiting 5.81 seconds to prevent rate limiting
+2025-02-08 22:33:23,024 - INFO: Waiting 4.18 seconds to prevent rate limiting
+2025-02-08 22:33:27,412 - INFO: Waiting 3.31 seconds to prevent rate limiting
+2025-02-08 22:33:30,934 - INFO: Waiting 5.31 seconds to prevent rate limiting
+2025-02-08 22:33:36,450 - INFO: Waiting 3.50 seconds to prevent rate limiting
+2025-02-08 22:33:40,261 - INFO: Waiting 6.62 seconds to prevent rate limiting
+2025-02-08 22:33:47,109 - INFO: Waiting 3.25 seconds to prevent rate limiting
+2025-02-08 22:33:50,630 - INFO: Waiting 5.71 seconds to prevent rate limiting
+2025-02-08 22:33:56,670 - INFO: Waiting 5.70 seconds to prevent rate limiting
+2025-02-08 22:34:02,584 - INFO: Waiting 5.09 seconds to prevent rate limiting
+2025-02-08 22:34:07,924 - INFO: Waiting 6.44 seconds to prevent rate limiting
+2025-02-08 22:34:14,579 - INFO: Waiting 6.79 seconds to prevent rate limiting
+2025-02-08 22:34:21,593 - ERROR: Collection process failed: 'genres'
+2025-02-08 22:42:29,721 - INFO: Saved 35 anime to top_anime_data.csv
+2025-02-08 22:42:29,723 - INFO: Saved 0 errors to anime_collection_errors.json
