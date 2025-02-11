@@ -1,12 +1,9 @@
 import streamlit as st  
-import pandas as pd  
-import numpy as np  
+import pandas as pd   
 from sklearn.metrics.pairwise import cosine_similarity  
 from sklearn.feature_extraction.text import CountVectorizer  
-import plotly.express as px  
-import plotly.graph_objs as go  
 
-@st.cache_data(ttl=24*3600) 
+@st.cache_data  
 def load_data():  
     # Load the main dataframe  
     df = pd.read_csv('anime-gg.csv')  
@@ -55,18 +52,20 @@ def get_recommendations(anime_name, df, genre_type_df, genre_type_cosine_matrix)
     if target.empty:  
         return None  
     
-    genre_type_cosine = genre_type_df.drop(columns='anime_id')
-
-    # Target Value
-    target_id =int(target[['anime_id']].values)
+    genre_type_cosine = genre_type_df.drop(columns='anime_id')  
+    # Target Value  
+    target_id =int(target[['anime_id']].values) 
 
     df_target = genre_type_df[genre_type_df['anime_id']==target_id]
-    df_target
 
+    # Target cosine with others  
+    cosine_sim = cosine_similarity(df_target.drop(columns='anime_id'), genre_type_cosine)
+    
+   
     # Target cosine with others
     cosine_sim = cosine_similarity(df_target.drop(columns='anime_id'), genre_type_cosine)
     cosine_sim_df = pd.DataFrame(cosine_sim).transpose().sort_values(0, ascending=False).rename(columns = {0:'Compatibility Score'})
-    cosine_sim_df['Compatibility Score'] = cosine_sim_df['Compatibility Score'].apply(lambda x: f'{round(x*100,2)}%')
+    cosine_sim_df['Compatibility Score'] = round(cosine_sim_df['Compatibility Score']*100,2)
 
     #Getting anime id based off index
     list_recommended_index = cosine_sim_df.index.tolist() # Exclude first one cos its the anime itself
@@ -92,7 +91,7 @@ def main():
     # Search box with autocomplete  
     anime_names = sorted(df['Name'].unique())  
     selected_anime = st.sidebar.selectbox(  
-        'Search for an Anime',   
+        'Type to Search for an Anime',   
         options=anime_names  
     )  
     
@@ -152,21 +151,6 @@ def main():
         else:  
             st.error('No recommendations found!')  
 
-    # Optional: Genre Distribution Visualization  
-    st.sidebar.header('Genre Insights')  
-    if st.sidebar.checkbox('Show Genre Distribution'):  
-        # Count genre occurrences  
-        genre_counts = df['Genres'].str.split(', ', expand=True).stack().value_counts()  
-        
-        # Create a bar chart using Plotly  
-        fig = px.bar(  
-            x=genre_counts.head(10).index,   
-            y=genre_counts.head(10).values,  
-            labels={'x': 'Genres', 'y': 'Count'},  
-            title='Top 10 Genres in the Dataset'  
-        )  
-        
-        st.plotly_chart(fig)  
 
 if __name__ == '__main__':  
     main()
