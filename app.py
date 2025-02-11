@@ -125,7 +125,6 @@ def main():
     df, genre_type_df, genre_type_cosine_matrix = load_data()  
     
     # Sidebar Configuration
-    st.sidebar.image("https://img.icons8.com/color/480/anime.png", width=200)
     st.sidebar.header('🔍 Anime Search', divider='rainbow')
     st.sidebar.markdown("""
     *Data sourced from [Kaggle Anime Dataset 2023](https://www.kaggle.com/datasets/dsfelix/animes-dataset-2023/data)*
