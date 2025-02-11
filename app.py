@@ -9,7 +9,7 @@ from PIL import Image
 @st.cache_resource
 def load_data():  
     # Load the main dataframe  
-    df = pd.read_csv('anime-gg.csv')[['anime_id', 'Name', 'Score', 'Genres', 'Type', 'Episodes', 'Synopsis', 'Image URL','Studios']]
+    df = pd.read_csv('anime-final.csv')[['anime_id', 'Name', 'Score', 'Genres', 'Type', 'Episodes', 'Synopsis', 'Image URL']]
     
     # Preprocess Genres  
     df['Genres'] = df['Genres'].fillna('')  # Fill NaN values with empty string  
@@ -158,7 +158,6 @@ def main():
                     st.write(f"**Score:** {row['Score']}")
                     st.write(f"**Compatibility Score:** {row['Compatibility Score']}%")
                     st.write(f"**Genres:** {row['Genres']}")
-                    st.write(f"**Studios:** {row['Studios']}")
                 
                 # Display synopsis
                 st.write("**Synopsis:**")
