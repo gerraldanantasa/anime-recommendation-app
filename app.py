@@ -1,13 +1,15 @@
 import streamlit as st  
 import pandas as pd   
 from sklearn.metrics.pairwise import cosine_similarity  
-from sklearn.feature_extraction.text import CountVectorizer  
+from sklearn.feature_extraction.text import CountVectorizer
+import urllib.request 
+from PIL import Image  
 
 @st.cache_data  
 @st.cache_resource
 def load_data():  
     # Load the main dataframe  
-    df = pd.read_csv('anime-gg.csv')  
+    df = pd.read_csv('anime-gg.csv')[['anime_id', 'Name', 'Score', 'Genres', 'Type', 'Episodes', 'Synopsis', 'Image URL','Studios']]
     
     # Preprocess Genres  
     df['Genres'] = df['Genres'].fillna('')  # Fill NaN values with empty string  
