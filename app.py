@@ -81,7 +81,8 @@ def get_recommendations(anime_name, df, genre_type_df, genre_type_cosine_matrix)
 
 # Streamlit App  
 def main():  
-    st.title('🎬 Anime Recommendation System')  
+    st.title('🎬 Anime Recommendation System')
+    st.header('Click the little arrow on the top left')
     
     # Load data  
     df, genre_type_df, genre_type_cosine_matrix = load_data()  
