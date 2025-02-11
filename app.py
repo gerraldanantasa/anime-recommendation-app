@@ -118,7 +118,7 @@ def main():
     st.title('🎬 Anime Recommendation System')
     st.markdown("""
     ### Discover Your Next Favorite Anime!
-    Use the sidebar to search for an anime and get personalized recommendations based on genres and type.
+    Click the small arrow on the top left to search for an anime and get personalized recommendations based on genres and type.
     """)
     
     # Load data  
