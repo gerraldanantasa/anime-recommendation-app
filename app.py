@@ -87,6 +87,7 @@ def main():
     
     # Sidebar for search and filters  
     st.sidebar.header('Anime Search')  
+    st.sidebar.write('Data is originated from https://www.kaggle.com/datasets/dsfelix/animes-dataset-2023/data')
     
     # Search box with autocomplete  
     anime_names = sorted(df['Name'].unique())  
