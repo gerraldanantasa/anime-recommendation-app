@@ -4,6 +4,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import CountVectorizer  
 
 @st.cache_data  
+@st.cache_resource
 def load_data():  
     # Load the main dataframe  
     df = pd.read_csv('anime-gg.csv')  
