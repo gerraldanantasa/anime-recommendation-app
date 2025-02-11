@@ -95,7 +95,8 @@ def main():
     anime_names = sorted(df['Name'].unique())  
     selected_anime = st.sidebar.selectbox(  
         'Type to Search for an Anime',   
-        options=anime_names  
+        options=anime_names,
+        index=None
     )  
     
     # Recommendation Filters  
