@@ -140,10 +140,10 @@ def main():
             # Limit number of recommendations  
             recommendations = recommendations.head(recommendation_count)  
             
-            st.header(f'Top 5 Recommendations based on {selected_anime}')
+            st.header(f'Top 10 Recommendations based on {selected_anime}')
             
             # Display top 5 recommendations with detailed information
-            for index, row in recommendations.head(5).iterrows():
+            for index, row in recommendations.head(10).iterrows():
                 st.subheader(row['Name'])
                 
                 # Create columns for image and details
