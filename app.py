@@ -150,7 +150,7 @@ def main():
                 
                 with col1:
                     # Display image
-                    st.image(row['Image URL'], use_column_width=True, caption='Anime Poster')
+                    st.image(row['Image URL'], use_container_width=True, caption='Anime Poster')
                 
                 with col2:
                     # Display details
