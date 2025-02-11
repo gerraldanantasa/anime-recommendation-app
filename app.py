@@ -55,14 +55,13 @@ def get_recommendations(anime_name, df, genre_type_df, genre_type_cosine_matrix)
     
     genre_type_cosine = genre_type_df.drop(columns='anime_id')  
     # Target Value  
-    target_id =int(target[['anime_id']].values) 
+    target_id = int(target[['anime_id']].values) 
 
     df_target = genre_type_df[genre_type_df['anime_id']==target_id]
 
     # Target cosine with others  
     cosine_sim = cosine_similarity(df_target.drop(columns='anime_id'), genre_type_cosine)
     
-   
     # Target cosine with others
     cosine_sim = cosine_similarity(df_target.drop(columns='anime_id'), genre_type_cosine)
     cosine_sim_df = pd.DataFrame(cosine_sim).transpose().sort_values(0, ascending=False).rename(columns = {0:'Compatibility Score'})
@@ -73,7 +72,6 @@ def get_recommendations(anime_name, df, genre_type_df, genre_type_cosine_matrix)
 
     recc_list = genre_type_df.iloc[list_recommended_index]['anime_id'].values.tolist()
     cosine_sim_df['anime_id'] = recc_list
-
 
     df_reccomended = df.iloc[list_recommended_index][df['anime_id']!=target_id]
     df_final = df_reccomended.merge(cosine_sim_df)
@@ -139,9 +137,36 @@ def main():
             # Limit number of recommendations  
             recommendations = recommendations.head(recommendation_count)  
             
-            st.header(f'Recommendations based on {selected_anime}')  
+            st.header(f'Recommendations based on {selected_anime}')
             
-            # Display recommendations as a DataFrame  
+            # Display top 5 recommendations with detailed information
+            for index, row in recommendations.head(5).iterrows():
+                st.subheader(row['Name'])
+                
+                # Create columns for image and details
+                col1, col2 = st.columns([1, 3])
+                
+                with col1:
+                    # Display image
+                    st.image(row['Image_URL'], use_column_width=True, caption='Anime Poster')
+                
+                with col2:
+                    # Display details
+                    st.write(f"**Type:** {row['Type']}")
+                    st.write(f"**Score:** {row['Score']}")
+                    st.write(f"**Compatibility Score:** {row['Compatibility Score']}%")
+                    st.write(f"**Genres:** {row['Genres']}")
+                    st.write(f"**Studios:** {row['Studios']}")
+                
+                # Display synopsis
+                st.write("**Synopsis:**")
+                st.write(row['Synopsis'])
+                
+                # Add a separator
+                st.markdown("---")
+            
+            # Display full recommendations dataframe
+            st.subheader('Full Recommendations')
             display_columns = [  
                 'Name', 'Type', 'Score', 'Compatibility Score',   
                 'Genres', 'Episodes'
