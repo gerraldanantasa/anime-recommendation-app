@@ -554,7 +554,7 @@ def main():
     display_list_film()
 
     if list_film:  # Only show recommendations if watchlist is not empty
-        display_user_recommendations(username)
+        display_user_recommendations(username, df, genre_type_df)
     
     if menu == "Anime Recommender":
         # Existing recommendation system code
