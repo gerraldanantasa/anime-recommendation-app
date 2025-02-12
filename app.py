@@ -1,11 +1,12 @@
-import streamlit as st  
-import pandas as pd   
-from sklearn.metrics.pairwise import cosine_similarity  
+import streamlit as st
+import pandas as pd
+from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import CountVectorizer
-import urllib.request 
-from PIL import Image  
 import json
 import os
+import yaml
+from yaml.loader import SafeLoader
+import streamlit_authenticator as stauth
 
 # Ensure watchlists directory exists
 os.makedirs('watchlists', exist_ok=True)
@@ -46,6 +47,87 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+
+def initialize_auth_config():
+    """
+    Initialize user credentials and authentication configuration
+    
+    Returns:
+    - dict: Authentication configuration
+    """
+    credentials_path = 'credentials.yaml'
+    
+    if not os.path.exists(credentials_path):
+        # Initial setup of credentials
+        credentials = {
+            'usernames': {
+                'admin': {
+                    'password': stauth.Hasher(['adminpassword']).generate()[0],
+                    'name': 'Admin User',
+                    'email': 'admin@example.com'
+                }
+            }
+        }
+        
+        # Authentication config
+        config = {
+            'credentials': credentials,
+            'cookie': {
+                'expirys_days': 30,
+                'key': 'anime_tracker_cookie',
+                'name': 'anime_tracker_session'
+            },
+            'preauthorized': {
+                'emails': ['admin@example.com']
+            }
+        }
+        
+        # Write to file
+        with open(credentials_path, 'w') as file:
+            yaml.dump(config, file)
+    
+    # Read existing credentials
+    with open(credentials_path) as file:
+        config = yaml.load(file, Loader=SafeLoader)
+    
+    return config
+
+def add_user(username, password):
+    """
+    Add a new user to the credentials file
+    
+    Args:
+    - username (str): User's username
+    - password (str): User's password
+    """
+    credentials_path = 'credentials.yaml'
+    
+    # Read existing config
+    with open(credentials_path) as file:
+        config = yaml.load(file, Loader=SafeLoader)
+    
+    # Check if username already exists
+    if username in config['credentials']['usernames']:
+        st.error("Username already exists!")
+        return False
+    
+    # Hash the password
+    hashed_password = stauth.Hasher([password]).generate()[0]
+    
+    # Add new user
+    config['credentials']['usernames'][username] = {
+        'password': hashed_password,
+        'name': username,  # Use username as name
+        'email': f'{username}@example.com'  # Generate placeholder email
+    }
+    
+    # Write updated config
+    with open(credentials_path, 'w') as file:
+        yaml.dump(config, file)
+    
+    st.success("User added successfully!")
+    return True
+
 
 # Watchlist Management Functions
 def save_watchlist(username, watchlist):
@@ -539,183 +621,235 @@ def load_data():
         return None, None, None
 
 def main():
-    # Simulate a username (in a real app, this would come from authentication)
-    username = "default_user"
+    # Initialize authentication configuration
+    config = initialize_auth_config()
     
-
-    # Load data  
-    df, genre_type_df, genre_type_cosine_matrix = load_data() 
-        
-    # Sidebar Navigation
-    menu = st.sidebar.radio("Navigation", 
-        ["Anime Recommender", "My Watchlist", "Update Watchlist", "Add to Watchlist"]
+    # Create authenticator object
+    authenticator = stauth.Authenticate(
+        config['credentials'],
+        config['cookie']['key'],
+        config['cookie']['name'],
+        config['cookie']['expirys_days'],
+        config['preauthorized']
     )
+    
+    # Authentication pages
+    st.title("🎬 Anime Tracker Authentication")
+    
+    # Create tabs for login, signup, and main app
+    tab1, tab2 = st.tabs(["Login", "Sign Up"])
+    
+    with tab1:
+        st.header("Login")
+        name, authentication_status, username = authenticator.login('Login', 'main')
+        
+        if authentication_status:
+            # Clear login page
+            st.empty()
+            
+            # Load data  
+            df, genre_type_df, genre_type_cosine_matrix = load_data() 
+            
+            # Personalize app with username
+            st.sidebar.header(f"Welcome, {name}!")
+            
+            # Logout button in sidebar
+            authenticator.logout('Logout', 'sidebar')
+            
+            # Sidebar Navigation
+            menu = st.sidebar.radio("Navigation", 
+                ["Anime Recommender", "My Watchlist", "Update Watchlist", "Add to Watchlist"]
+            )
 
-    global list_film
-    list_film = load_watchlist(username)
-    
-    # Display current watchlist on all pages
-    display_list_film()
-    
-    if menu == "Anime Recommender":
-        # Existing recommendation system code
-        st.title('🎬 Anime Recommendation System')
-        st.markdown("""
-        ### Discover Your Next Favorite Anime!
-        Click the small arrow on the top left to search for an anime and get personalized recommendations based on genres and type.
-        """)
-        
-         
-        
-       # Sidebar Configuration
-        st.sidebar.header('🔍 Anime Search', divider='rainbow')
-        st.sidebar.markdown("""
-        *Data sourced from [Kaggle Anime Dataset 2023](https://www.kaggle.com/datasets/dsfelix/animes-dataset-2023/data)*
-        """)
-        
-        # Search box with autocomplete  
-        anime_names = sorted(df['Name'].unique())  
-        selected_anime = st.sidebar.selectbox(  
-            '**Select an Anime**',   
-            options=anime_names,
-            index=None,
-            placeholder="Type to search..."
-        )  
-        
-        # Recommendation Filters  
-        st.sidebar.header('🎯 Recommendation Filters', divider='blue')  
-        
-        # Number of Recommendations Filter  
-        recommendation_count = st.sidebar.selectbox(  
-            '**Number of Recommendations**',  
-            options=[10, 15, 20, 25, 50],
-            help="Choose how many anime recommendations you want to see"
-        )  
-        
-        # Type Filter  
-        unique_types = ['All'] + list(df['Type'].unique())  
-        selected_type = st.sidebar.selectbox(  
-            '**Filter by Anime Type**',  
-            options=unique_types,
-            help="Filter recommendations by anime type"
-        )  
-        
-        # Additional filters  
-        st.sidebar.header('⭐ Score Filter', divider='green')  
-        min_score = st.sidebar.slider(
-            '**Minimum Score**', 
-            0.0, 10.0, 6.0, 0.1,
-            help="Filter recommendations by minimum rating"
-        )  
-        
-        # Recommendation button  
-        if st.sidebar.button('🚀 Get Recommendations', type='primary'):  
-            # Validate anime selection
-            if selected_anime is None:
-                st.error("❌ Please select an anime first!")
-            else:
-                # Get recommendations  
-                recommendations = get_recommendations(  
-                    selected_anime,   
-                    df,   
-                    genre_type_df,   
-                    genre_type_cosine_matrix  
+            global list_film
+            list_film = load_watchlist(username)
+            
+            # Display current watchlist on all pages
+            display_list_film()
+            
+            if menu == "Anime Recommender":
+                # Existing recommendation system code
+                st.title('🎬 Anime Recommendation System')
+                st.markdown("""
+                ### Discover Your Next Favorite Anime!
+                Click the small arrow on the top left to search for an anime and get personalized recommendations based on genres and type.
+                """)
+                
+                # Sidebar Configuration
+                st.sidebar.header('🔍 Anime Search', divider='rainbow')
+                st.sidebar.markdown("""
+                *Data sourced from [Kaggle Anime Dataset 2023](https://www.kaggle.com/datasets/dsfelix/animes-dataset-2023/data)*
+                """)
+                
+                # Search box with autocomplete  
+                anime_names = sorted(df['Name'].unique())  
+                selected_anime = st.sidebar.selectbox(  
+                    '**Select an Anime**',   
+                    options=anime_names,
+                    index=None,
+                    placeholder="Type to search..."
                 )  
                 
-                # Modify the recommendation display section in the main() function where recommendations are shown:
-
-            if recommendations is not None and not recommendations.empty:  
-                # Filter by minimum score  
-                recommendations = recommendations[recommendations['Score'] >= min_score]  
+                # Recommendation Filters  
+                st.sidebar.header('🎯 Recommendation Filters', divider='blue')  
                 
-                # Filter by type if not 'All'  
-                if selected_type != 'All':  
-                    recommendations = recommendations[recommendations['Type'] == selected_type]  
+                # Number of Recommendations Filter  
+                recommendation_count = st.sidebar.selectbox(  
+                    '**Number of Recommendations**',  
+                    options=[10, 15, 20, 25, 50],
+                    help="Choose how many anime recommendations you want to see"
+                )  
                 
-                # Limit number of recommendations  
-                recommendations = recommendations.head(recommendation_count)  
+                # Type Filter  
+                unique_types = ['All'] + list(df['Type'].unique())  
+                selected_type = st.sidebar.selectbox(  
+                    '**Filter by Anime Type**',  
+                    options=unique_types,
+                    help="Filter recommendations by anime type"
+                )  
                 
-                st.header(f'🌟 Recommendations for {selected_anime}')
+                # Additional filters  
+                st.sidebar.header('⭐ Score Filter', divider='green')  
+                min_score = st.sidebar.slider(
+                    '**Minimum Score**', 
+                    0.0, 10.0, 6.0, 0.1,
+                    help="Filter recommendations by minimum rating"
+                )  
                 
-                # Display top recommendations with detailed information
-                for index, row in recommendations.iterrows():
-                    st.markdown(f"""
-                    <div class='recommendation-card'>
-                        <h3>{row['Name']}</h3>
-                    </div>
-                    """, unsafe_allow_html=True)
-                    
-                    # Create columns for image and details
-                    col1, col2 = st.columns([1, 3])
-                    
-                    with col1:
-                        # Display image
-                        st.image(row['Image URL'], use_container_width=True, caption='Anime Poster')
-                    
-                    with col2:
-                        # Display details with improved formatting
-                        st.markdown(f"""
-                        **📺 Type:** {row['Type']}
+                # Recommendation button  
+                if st.sidebar.button('🚀 Get Recommendations', type='primary'):  
+                    # Validate anime selection
+                    if selected_anime is None:
+                        st.error("❌ Please select an anime first!")
+                    else:
+                        # Get recommendations  
+                        recommendations = get_recommendations(  
+                            selected_anime,   
+                            df,   
+                            genre_type_df,   
+                            genre_type_cosine_matrix  
+                        )  
                         
-                        **⭐ MAL Score:** {row['Score']}/10
-                        
-                        **🔍 Compatibility Score:** {row['Compatibility Score']}%
-                        
-                        **🏷️ Genres:** {row['Genres']}
-                        """)
-                        
-                        # Add to watchlist button
-                        if st.button(f"Add '{row['Name']}' to Watchlist", key=f"add_rec_{index}"):
-                            if not any(film['Name'] == row['Name'] for film in list_film):
-                                new_entry = {
-                                    'Name': row['Name'],
-                                    'Genres': row['Genres'].split(',') if pd.notna(row['Genres']) else [],
-                                    'Type': row['Type'] if pd.notna(row['Type']) else 'Anime',
-                                    'Episodes': row['Episodes'] if pd.notna(row['Episodes']) else 0,
-                                    'Episodes Watched': 0,
-                                    'Status': 'Not Started',
-                                    'Score': 0.0,
-                                    'Synopsis': str(row['Synopsis']) if pd.notna(row['Synopsis']) else '',
-                                    'Image URL': str(row['Image URL']) if pd.notna(row['Image URL']) else ''
-                                }
+                        if recommendations is not None and not recommendations.empty:  
+                            # Filter by minimum score  
+                            recommendations = recommendations[recommendations['Score'] >= min_score]  
+                            
+                            # Filter by type if not 'All'  
+                            if selected_type != 'All':  
+                                recommendations = recommendations[recommendations['Type'] == selected_type]  
+                            
+                            # Limit number of recommendations  
+                            recommendations = recommendations.head(recommendation_count)  
+                            
+                            st.header(f'🌟 Recommendations for {selected_anime}')
+                            
+                            # Display top recommendations with detailed information
+                            for index, row in recommendations.iterrows():
+                                st.markdown(f"""
+                                <div class='recommendation-card'>
+                                    <h3>{row['Name']}</h3>
+                                </div>
+                                """, unsafe_allow_html=True)
                                 
-                                list_film.append(new_entry)
-                                save_watchlist(username, list_film)
-                                st.success(f"'{row['Name']}' added to watchlist!")
-                            else:
-                                st.warning(f"'{row['Name']}' is already in your watchlist!")
-                    
-                    # Display synopsis
-                    st.markdown(f"""
-                    **📝 Synopsis:**
-                    *{row['Synopsis']}*
-                    """)
-                    
-                    # Add a separator
-                    st.markdown("---")
-                
-                # Display full recommendations dataframe
-                st.subheader('📋 Full Recommendations')
-                display_columns = [  
-                    'Name', 'Type', 'Score', 'Compatibility Score',   
-                    'Genres', 'Episodes'
-                ]  
-                st.dataframe(  
-                    recommendations[display_columns],   
-                    use_container_width=True,  
-                    hide_index=True  
-                )  
-            else:  
-                st.error('🤷‍♀️ No recommendations found!')
+                                # Create columns for image and details
+                                col1, col2 = st.columns([1, 3])
+                                
+                                with col1:
+                                    # Display image
+                                    st.image(row['Image URL'], use_container_width=True, caption='Anime Poster')
+                                
+                                with col2:
+                                    # Display details with improved formatting
+                                    st.markdown(f"""
+                                    **📺 Type:** {row['Type']}
+                                    
+                                    **⭐ MAL Score:** {row['Score']}/10
+                                    
+                                    **🔍 Compatibility Score:** {row['Compatibility Score']}%
+                                    
+                                    **🏷️ Genres:** {row['Genres']}
+                                    """)
+                                    
+                                    # Add to watchlist button
+                                    if st.button(f"Add '{row['Name']}' to Watchlist", key=f"add_rec_{index}"):
+                                        if not any(film['Name'] == row['Name'] for film in list_film):
+                                            new_entry = {
+                                                'Name': row['Name'],
+                                                'Genres': row['Genres'].split(',') if pd.notna(row['Genres']) else [],
+                                                'Type': row['Type'] if pd.notna(row['Type']) else 'Anime',
+                                                'Episodes': row['Episodes'] if pd.notna(row['Episodes']) else 0,
+                                                'Episodes Watched': 0,
+                                                'Status': 'Not Started',
+                                                'Score': 0.0,
+                                                'Synopsis': str(row['Synopsis']) if pd.notna(row['Synopsis']) else '',
+                                                'Image URL': str(row['Image URL']) if pd.notna(row['Image URL']) else ''
+                                            }
+                                            
+                                            list_film.append(new_entry)
+                                            save_watchlist(username, list_film)
+                                            st.success(f"'{row['Name']}' added to watchlist!")
+                                        else:
+                                            st.warning(f"'{row['Name']}' is already in your watchlist!")
+                                
+                                # Display synopsis
+                                st.markdown(f"""
+                                **📝 Synopsis:**
+                                *{row['Synopsis']}*
+                                """)
+                                
+                                # Add a separator
+                                st.markdown("---")
+                            
+                            # Display full recommendations dataframe
+                            st.subheader('📋 Full Recommendations')
+                            display_columns = [  
+                                'Name', 'Type', 'Score', 'Compatibility Score',   
+                                'Genres', 'Episodes'
+                            ]  
+                            st.dataframe(  
+                                recommendations[display_columns],   
+                                use_container_width=True,  
+                                hide_index=True  
+                            )  
+                        else:  
+                            st.error('🤷‍♀️ No recommendations found!')
+            
+            elif menu == "My Watchlist":
+                display_watchlist(username)
+            
+            elif menu == "Update Watchlist":
+                update_watchlist(username)
+            
+            elif menu == "Add to Watchlist":
+                add_to_watchlist(username)
+        
+        elif authentication_status == False:
+            st.error('Username/password is incorrect')
+        
+        elif authentication_status == None:
+            st.warning('Please enter your username and password')
     
-    elif menu == "My Watchlist":
-        display_watchlist(username)
-    
-    elif menu == "Update Watchlist":
-        update_watchlist(username)
-    
-    elif menu == "Add to Watchlist":
-        add_to_watchlist(username)
+    with tab2:
+        st.header("Sign Up")
+        # Sign Up Form
+        with st.form("signup_form"):
+            new_username = st.text_input("Username")
+            new_password = st.text_input("Password", type="password")
+            confirm_password = st.text_input("Confirm Password", type="password")
+            
+            signup_submitted = st.form_submit_button("Create Account")
+            
+            if signup_submitted:
+                # Validate form inputs
+                if not new_username or not new_password:
+                    st.error("Please fill in all fields")
+                elif new_password != confirm_password:
+                    st.error("Passwords do not match")
+                elif len(new_password) < 6:
+                    st.error("Password must be at least 6 characters long")
+                else:
+                    # Add user
+                    add_user(new_username, new_password)
 
-if __name__ == '__main__':  
+if __name__ == '__main__':
     main()
