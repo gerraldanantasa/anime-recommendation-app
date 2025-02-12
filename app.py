@@ -6,6 +6,10 @@ import urllib.request
 from PIL import Image  
 import json
 import os
+import base64
+from io import BytesIO
+from PIL import Image
+
 
 # Ensure watchlists directory exists
 os.makedirs('watchlists', exist_ok=True)
@@ -13,6 +17,24 @@ os.makedirs('watchlists', exist_ok=True)
 # Global lists to track anime (for compatibility with existing code)
 list_film = []
 favorite_list = []
+
+
+def image_to_base64(image):
+    """Convert PIL Image to base64 string"""
+    buffered = BytesIO()
+    image.save(buffered, format="PNG")
+    return base64.b64encode(buffered.getvalue()).decode()
+
+# Load the image
+logo_image = Image.open('FT_2025-02-12 20_46_37.034.png')  # Or use the hand-drawn image
+base64_logo = image_to_base64(logo_image)
+
+# In sidebar
+st.sidebar.markdown(f"""
+<div class="logo-container">
+    <img src="data:image/png;base64,{base64_logo}" class="logo-image" alt="Anime GG Logo">
+</div>
+""", unsafe_allow_html=True)
 
 # Custom CSS for improved styling
 st.set_page_config(
