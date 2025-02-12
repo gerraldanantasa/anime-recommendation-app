@@ -217,6 +217,153 @@ def display_watchlist(username):
     else:
         st.info("Your watchlist is empty. Add some anime!")
 
+def get_user_recommendations(username, df, genre_type_df):
+    """
+    Generate personalized recommendations based on the user's watchlist
+    
+    Args:
+        username (str): The username to load watchlist for
+        df (pandas.DataFrame): Main anime dataset
+        genre_type_df (pandas.DataFrame): Genre-type matrix
+    
+    Returns:
+        pandas.DataFrame: Top recommended anime for the user
+    """
+    # Load user's watchlist
+    list_film = load_watchlist(username)
+    
+    if not list_film:
+        return pd.DataFrame()  # Return empty if no watchlist
+    
+    # Prepare user's watched anime data
+    watched_anime_ids = []
+    watched_scores = []
+    
+    # Find anime IDs from the main dataframe
+    for anime in list_film:
+        try:
+            # Find matching anime in the dataframe
+            matching_anime = df[df['Name'] == anime['Name']]
+            
+            # If anime found and has a score
+            if not matching_anime.empty and anime.get('Score', 0) > 0:
+                watched_anime_ids.append(matching_anime['anime_id'].values[0])
+                watched_scores.append(anime['Score'])
+        except Exception as e:
+            st.error(f"Error processing anime {anime.get('Name', 'Unknown')}: {e}")
+    
+    # If no scored anime, return empty
+    if not watched_anime_ids:
+        return pd.DataFrame()
+    
+    # Filter genre matrix for watched anime
+    try:
+        # Prepare genre matrix for watched anime
+        single_user_matrix = genre_type_df[genre_type_df['anime_id'].isin(watched_anime_ids)].copy()
+        
+        # Identify genre columns (excluding 'Name' and 'anime_id')
+        genre_columns = [col for col in single_user_matrix.columns 
+                         if col not in ['Name', 'anime_id']]
+        
+        # Create a score mapping
+        score_map = dict(zip(watched_anime_ids, watched_scores))
+        
+        # Multiply genre matrix by user ratings
+        for column in genre_columns:
+            single_user_matrix[column] = single_user_matrix[column] * single_user_matrix['anime_id'].map(score_map)
+        
+        # Calculate genre preference vector
+        genre_vector = single_user_matrix[genre_columns].sum() / single_user_matrix[genre_columns].sum().sum()
+        
+        # Prepare unwatched matrix (exclude already watched anime)
+        unwatched_matrix = genre_type_df[~genre_type_df['anime_id'].isin(watched_anime_ids)].copy()
+        
+        # Normalize recommendation scores
+        df_recc_normalized_matrix = unwatched_matrix[genre_columns].multiply(genre_vector, axis=1)
+        
+        # Calculate recommendation scores
+        reccomended_df = pd.DataFrame(df_recc_normalized_matrix.sum(axis=1)).reset_index()
+        reccomended_df.columns = ['anime_id', 'Score']
+        reccomended_df = reccomended_df.sort_values('Score', ascending=False)
+        
+        # Get top recommended anime
+        recommeded_list = reccomended_df['anime_id'].head(10).values.tolist()
+        top_10_reccomended = df[df['anime_id'].isin(recommeded_list)].copy()
+        
+        # Merge with recommendation scores
+        top_10_reccomended = top_10_reccomended.merge(reccomended_df, on='anime_id')
+        
+        return top_10_reccomended.sort_values('Score', ascending=False).head(3)
+    
+    except Exception as e:
+        st.error(f"Error in recommendation generation: {e}")
+        return pd.DataFrame()
+
+def display_user_recommendations(username, df, genre_type_df):
+    """
+    Display personalized recommendations in the main content area
+    
+    Args:
+        username (str): The username to load watchlist for
+        df (pandas.DataFrame): Main anime dataset
+        genre_type_df (pandas.DataFrame): Genre-type matrix
+    """
+    global list_film
+    
+    # Get user recommendations
+    user_recommendations = get_user_recommendations(username, df, genre_type_df)
+    
+    if not user_recommendations.empty:
+        st.header("🌟 Recommended Just for You")
+        
+        # Create columns for recommendations
+        cols = st.columns(3)
+        
+        for i, (_, row) in enumerate(user_recommendations.iterrows()):
+            with cols[i]:
+                # Card-like display
+                st.markdown(f"""
+                <div class='recommendation-card'>
+                    <h3>{row['Name']}</h3>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                # Display image if available
+                if pd.notna(row['Image URL']) and row['Image URL']:
+                    st.image(row['Image URL'], use_container_width=True, caption='Anime Poster')
+                
+                # Show anime details
+                st.markdown(f"""
+                **📺 Type:** {row['Type']}
+                
+                **⭐ Score:** {row['Score']:.2f}/10
+                
+                **🏷️ Genres:** {row['Genres']}
+                """)
+                
+                # Add to watchlist button
+                if st.button(f"Add '{row['Name']}' to Watchlist", key=f"add_{row['anime_id']}"):
+                    # Check if anime already in watchlist
+                    if not any(film['Name'] == row['Name'] for film in list_film):
+                        # Simulate adding to watchlist
+                        new_entry = {
+                            'Name': row['Name'],
+                            'Genres': row['Genres'].split(',') if pd.notna(row['Genres']) else [],
+                            'Type': row['Type'] if pd.notna(row['Type']) else 'Anime',
+                            'Episodes': row['Episodes'] if pd.notna(row['Episodes']) else 0,
+                            'Episodes Watched': 0,
+                            'Status': 'Not Started',
+                            'Score': 0.0,
+                            'Synopsis': str(row['Synopsis']) if pd.notna(row['Synopsis']) else '',
+                            'Image URL': str(row['Image URL']) if pd.notna(row['Image URL']) else ''
+                        }
+                        
+                        list_film.append(new_entry)
+                        save_watchlist(username, list_film)
+                        st.success(f"'{row['Name']}' added to watchlist!")
+                    else:
+                        st.warning(f"'{row['Name']}' is already in your watchlist!")
+
 def update_watchlist(username):
     """Update an existing anime in the user's watchlist"""
     global list_film
@@ -405,6 +552,9 @@ def main():
     
     # Display current watchlist on all pages
     display_list_film()
+
+    if list_film:  # Only show recommendations if watchlist is not empty
+        display_user_recommendations(username)
     
     if menu == "Anime Recommender":
         # Existing recommendation system code
