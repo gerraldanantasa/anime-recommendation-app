@@ -71,7 +71,7 @@ def add_to_watchlist(username):
     st.sidebar.header("🎥 Add to Watchlist")
     
     df = pd.read_csv('anime-gg.csv')[['anime_id', 'Name', 'Score', 'Genres', 'Type', 'Episodes', 'Synopsis', 'Image URL']]
-    
+
     # Sort and unique anime names from the dataset
     anime_names = sorted(df['Name'].unique())
     
@@ -440,7 +440,7 @@ def main():
         update_watchlist(username)
     
     elif menu == "Add to Watchlist":
-        add_to_watchlist(username, df)
+        add_to_watchlist(username)
 
 if __name__ == '__main__':  
     main()
