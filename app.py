@@ -116,7 +116,7 @@ def get_recommendations(anime_name, df, genre_type_df, genre_type_cosine_matrix)
 def display_next_recommendations(recommendations, start_index):
     end_index = min(start_index + 10, len(recommendations))
     
-    st.subheader(f'📋 Recommendations {start_index} - {end_index}')
+    st.subheader(f'📋 Recommendations {start_index + 1} - {end_index}')
     
     for index, row in recommendations.iloc[start_index:end_index].iterrows():
         st.markdown(f"""
