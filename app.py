@@ -108,6 +108,8 @@ def add_to_watchlist(username):
         )
         
         if st.sidebar.button("Add to Watchlist"):
+            # Check for duplicates
+            if not any(str(film['Name']).lower() == str(selected_anime).lower() for film in list_film):
                 new_entry = {
                     'Name': selected_anime,
                     'Genres': anime_data['Genres'].split(',') if pd.notna(anime_data['Genres']) else [],
@@ -125,6 +127,8 @@ def add_to_watchlist(username):
                 # Save updated watchlist
                 save_watchlist(username, list_film)
                 st.sidebar.success(f"'{selected_anime}' added to watchlist!")
+            else:
+                st.sidebar.warning(f"'{selected_anime}' already exists in the list.")
 
 def display_list_film():
     """Display the current list_film across all pages"""
@@ -265,27 +269,40 @@ def get_recommendations(anime_name, df, genre_type_df, genre_type_cosine_matrix)
     if target.empty:  
         return None  
     
-    genre_type_cosine = genre_type_df.drop(columns='anime_id')  
+    # Ensure genre_type_df has the required columns
+    if 'anime_id' not in genre_type_df.columns:
+        genre_type_df['anime_id'] = df['anime_id']
+    
+    genre_type_cosine = genre_type_df.drop(columns=['Name', 'anime_id'], errors='ignore')  
+    
     # Target Value  
-    target_id = int(target[['anime_id']].values) 
+    try:
+        target_id = int(target[['anime_id']].values[0][0])
+    except (IndexError, ValueError):
+        target_id = 0
 
-    df_target = genre_type_df[genre_type_df['anime_id']==target_id]
+    df_target = genre_type_df[genre_type_df['anime_id'] == target_id]
+
+    # Ensure df_target is not empty
+    if df_target.empty:
+        return None
 
     # Target cosine with others  
-    cosine_sim = cosine_similarity(df_target.drop(columns='anime_id'), genre_type_cosine)
+    cosine_sim = cosine_similarity(
+        df_target.drop(columns=['Name', 'anime_id'], errors='ignore'), 
+        genre_type_cosine
+    )
     
-    # Target cosine with others
-    cosine_sim = cosine_similarity(df_target.drop(columns='anime_id'), genre_type_cosine)
     cosine_sim_df = pd.DataFrame(cosine_sim).transpose().sort_values(0, ascending=False).rename(columns = {0:'Compatibility Score'})
     cosine_sim_df['Compatibility Score'] = round(cosine_sim_df['Compatibility Score']*100,2)
 
-    #Getting anime id based off index
-    list_recommended_index = cosine_sim_df.index.tolist() # Exclude first one cos its the anime itself
+    # Getting anime id based off index
+    list_recommended_index = cosine_sim_df.index.tolist()
 
     recc_list = genre_type_df.iloc[list_recommended_index]['anime_id'].values.tolist()
     cosine_sim_df['anime_id'] = recc_list
 
-    df_reccomended = df.iloc[list_recommended_index][df['anime_id']!=target_id]
+    df_reccomended = df.iloc[list_recommended_index][df['anime_id'] != target_id]
     df_final = df_reccomended.merge(cosine_sim_df)
     return df_final.sort_values('Compatibility Score', ascending=False)  
 
@@ -299,11 +316,23 @@ def load_data():
         df = pd.concat([df, user_df], ignore_index=True)
     
     # Preprocess Genres  
-    df['Genres'] = df['Genres'].fillna('')  # Fill NaN values with empty string  
+    df['Genres'] = df['Genres'].fillna('').astype(str)
+    
+    # Ensure Genres are strings and lowercase
+    df['Genres'] = df['Genres'].apply(lambda x: x.lower() if isinstance(x, str) else str(x).lower())
     
     # Create CountVectorizer for Genres  
-    cv_genre = CountVectorizer(tokenizer=lambda x: x.split(', '))  
-    genre_matrix = cv_genre.fit_transform(df['Genres'])  
+    cv_genre = CountVectorizer(
+        tokenizer=lambda x: x.split(','),
+        lowercase=True
+    )  
+    
+    # Handle potential empty list
+    genres = df['Genres'].tolist()
+    if not genres:
+        genres = ['']
+    
+    genre_matrix = cv_genre.fit_transform(genres)  
     genre_names = cv_genre.get_feature_names_out()  
     
     # Create Genre DataFrame  
@@ -314,8 +343,11 @@ def load_data():
     ).reset_index()  
     
     # Create CountVectorizer for Types  
-    cv_type = CountVectorizer(tokenizer=lambda x: x.split(', '))  
-    type_matrix = cv_type.fit_transform(df['Type'])  
+    cv_type = CountVectorizer(
+        tokenizer=lambda x: x.split(','),
+        lowercase=True
+    )  
+    type_matrix = cv_type.fit_transform(df['Type'].fillna('').astype(str))  
     type_names = cv_type.get_feature_names_out()  
     
     # Create Type DataFrame  
