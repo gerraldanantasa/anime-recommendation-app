@@ -166,6 +166,57 @@ def display_list_film():
         total_episodes = df['Episodes Watched'].sum()
         st.metric("Total Episodes Watched", total_episodes)
 
+def display_watchlist(username):
+    """Display the user's watchlist"""
+    global list_film
+    list_film = load_watchlist(username)
+    
+    st.header("📺 Detailed Watchlist")
+    
+    if list_film:
+        # Create a DataFrame for display
+        df = pd.DataFrame(list_film)
+        
+        # Columns to display
+        display_columns = ['Name', 'Genres', 'Type', 'Episodes', 'Episodes Watched', 'Status', 'Score']
+        
+        # Display the watchlist with more detailed view
+        st.dataframe(
+            df[display_columns], 
+            use_container_width=True, 
+            hide_index=True
+        )
+        
+        # Detailed view with charts or additional information
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            # Status distribution
+            status_counts = df['Status'].value_counts()
+            st.subheader("Watchlist Status")
+            st.bar_chart(status_counts)
+        
+        with col2:
+            # Progress visualization
+            st.subheader("Watching Progress")
+            df['Progress'] = df['Episodes Watched'] / df['Episodes'] * 100
+            st.bar_chart(df.set_index('Name')['Progress'])
+        
+        # Optional: Delete functionality
+        delete_anime = st.selectbox("Select Anime to Delete", [''] + df['Name'].tolist())
+        
+        if delete_anime:
+            if st.button("Confirm Delete"):
+                # Remove the selected anime
+                list_film = [film for film in list_film if film['Name'] != delete_anime]
+                
+                # Save updated watchlist
+                save_watchlist(username, list_film)
+                st.success(f"'{delete_anime}' removed from watchlist!")
+                st.experimental_rerun()
+    else:
+        st.info("Your watchlist is empty. Add some anime!")
+
 def update_watchlist(username):
     """Update an existing anime in the user's watchlist"""
     global list_film
