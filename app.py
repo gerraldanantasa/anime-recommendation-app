@@ -217,7 +217,7 @@ def display_watchlist(username):
     else:
         st.info("Your watchlist is empty. Add some anime!")
 
-def get_user_recommendations(username):
+def get_user_recommendations(username, df, genre_type_df):
     """
     Generate personalized recommendations based on the user's watchlist
     
@@ -299,7 +299,7 @@ def get_user_recommendations(username):
         st.error(f"Error in recommendation generation: {e}")
         return pd.DataFrame()
 
-def display_user_recommendations(username):
+def display_user_recommendations(username, df, genre_type_df):
     """
     Display personalized recommendations in the main content area
     
@@ -311,7 +311,7 @@ def display_user_recommendations(username):
     global list_film
     
     # Get user recommendations
-    user_recommendations = get_user_recommendations(username)
+    user_recommendations = get_user_recommendations(username, df, genre_type_df)
     
     if not user_recommendations.empty:
         st.header("🌟 Recommended Just for You")
@@ -542,6 +542,10 @@ def main():
     # Simulate a username (in a real app, this would come from authentication)
     username = "default_user"
     
+
+    # Load data  
+    df, genre_type_df, genre_type_cosine_matrix = load_data() 
+    
     # Sidebar Navigation
     menu = st.sidebar.radio("Navigation", 
         ["Anime Recommender", "My Watchlist", "Update Watchlist", "Add to Watchlist"]
@@ -553,8 +557,8 @@ def main():
     # Display current watchlist on all pages
     display_list_film()
 
-    if list_film:  # Only show recommendations if watchlist is not empty
-        display_user_recommendations(username)
+    if list_film and df is not None and genre_type_df is not None:
+        display_user_recommendations(username, df, genre_type_df)
     
     if menu == "Anime Recommender":
         # Existing recommendation system code
@@ -564,8 +568,7 @@ def main():
         Click the small arrow on the top left to search for an anime and get personalized recommendations based on genres and type.
         """)
         
-        # Load data  
-        df, genre_type_df, genre_type_cosine_matrix = load_data()  
+         
         
        # Sidebar Configuration
         st.sidebar.header('🔍 Anime Search', divider='rainbow')
