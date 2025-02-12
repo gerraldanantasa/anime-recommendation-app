@@ -474,64 +474,83 @@ def display_watchlist_recommendations(username, df, genre_type_df):
             "Add to Watchlist"
         ]
 def load_data():  
-    # Load the main dataframe  
-    df = pd.read_csv('anime-gg.csv')[['anime_id', 'Name', 'Score', 'Genres', 'Type', 'Episodes', 'Synopsis', 'Image URL']]
-    
-    # Combine with user's list_film
-    if list_film:
-        user_df = pd.DataFrame(list_film)
-        df = pd.concat([df, user_df], ignore_index=True)
-    
-    # Preprocess Genres  
-    df['Genres'] = df['Genres'].fillna('').astype(str)
-    
-    # Ensure Genres are strings and lowercase
-    df['Genres'] = df['Genres'].apply(lambda x: x.lower() if isinstance(x, str) else str(x).lower())
-    
-    # Create CountVectorizer for Genres  
-    cv_genre = CountVectorizer(
-        tokenizer=lambda x: x.split(','),
-        lowercase=True
-    )  
-    
-    # Handle potential empty list
-    genres = df['Genres'].tolist()
-    if not genres:
-        genres = ['']
-    
-    genre_matrix = cv_genre.fit_transform(genres)  
-    genre_names = cv_genre.get_feature_names_out()  
-    
-    # Create Genre DataFrame  
-    genre_df = pd.DataFrame(  
-        genre_matrix.toarray(),   
-        columns=genre_names,   
-        index=df['Name']  
-    ).reset_index()  
-    
-    # Create CountVectorizer for Types  
-    cv_type = CountVectorizer(
-        tokenizer=lambda x: x.split(','),
-        lowercase=True
-    )  
-    type_matrix = cv_type.fit_transform(df['Type'].fillna('').astype(str))  
-    type_names = cv_type.get_feature_names_out()  
-    
-    # Create Type DataFrame  
-    type_df = pd.DataFrame(  
-        type_matrix.toarray(),   
-        columns=type_names,   
-        index=df['Name']  
-    ).reset_index()  
-    
-    # Merge genre and type dataframes  
-    genre_type_df = genre_df.merge(type_df)  
-    
-    # Compute cosine similarity matrix  
-    genre_type_cosine = genre_type_df.drop(columns='Name')  
-    genre_type_cosine_matrix = cosine_similarity(genre_type_cosine)  
-    
-    return df, genre_type_df, genre_type_cosine_matrix  
+    """
+    Load and preprocess anime data with error handling
+    """
+    try:
+        # Load the main dataframe  
+        df = pd.read_csv('anime-gg.csv')[['anime_id', 'Name', 'Score', 'Genres', 'Type', 'Episodes', 'Synopsis', 'Image URL']]
+        
+        # Ensure no duplicate names
+        df = df.drop_duplicates(subset=['Name'])
+        
+        # Handle missing values
+        df['Genres'] = df['Genres'].fillna('')
+        df['Type'] = df['Type'].fillna('Unknown')
+        df['Episodes'] = df['Episodes'].fillna(0)
+        df['Synopsis'] = df['Synopsis'].fillna('No synopsis available')
+        df['Image URL'] = df['Image URL'].fillna('')
+        
+        # Ensure all text columns are strings
+        df['Genres'] = df['Genres'].astype(str)
+        df['Type'] = df['Type'].astype(str)
+        df['Synopsis'] = df['Synopsis'].astype(str)
+        
+        # Create CountVectorizer for Genres with error handling
+        cv_genre = CountVectorizer(
+            tokenizer=lambda x: x.split(','),
+            lowercase=True,
+            min_df=1  # Include all terms
+        )
+        
+        # Fit and transform genres
+        genre_matrix = cv_genre.fit_transform(df['Genres'])
+        genre_names = cv_genre.get_feature_names_out()
+        
+        # Create Genre DataFrame with proper index
+        genre_df = pd.DataFrame(
+            genre_matrix.toarray(),
+            columns=genre_names,
+            index=df.index
+        )
+        genre_df['Name'] = df['Name']
+        genre_df['anime_id'] = df['anime_id']
+        
+        # Create CountVectorizer for Types
+        cv_type = CountVectorizer(
+            tokenizer=lambda x: [x],  # Each type is a single token
+            lowercase=True,
+            min_df=1
+        )
+        
+        # Fit and transform types
+        type_matrix = cv_type.fit_transform(df['Type'])
+        type_names = cv_type.get_feature_names_out()
+        
+        # Create Type DataFrame with proper index
+        type_df = pd.DataFrame(
+            type_matrix.toarray(),
+            columns=type_names,
+            index=df.index
+        )
+        type_df['Name'] = df['Name']
+        
+        # Merge genre and type dataframes
+        genre_type_df = genre_df.merge(type_df, on='Name')
+        
+        # Ensure anime_id is preserved
+        genre_type_df = genre_type_df.merge(df[['Name', 'anime_id']], on='Name', how='left')
+        
+        # Compute cosine similarity matrix for feature columns only
+        feature_columns = [col for col in genre_type_df.columns if col not in ['Name', 'anime_id']]
+        genre_type_cosine = genre_type_df[feature_columns]
+        genre_type_cosine_matrix = cosine_similarity(genre_type_cosine)
+        
+        return df, genre_type_df, genre_type_cosine_matrix
+        
+    except Exception as e:
+        st.error(f"Error loading data: {str(e)}")
+        return None, None, None
 
 def main():
     # Simulate a username (in a real app, this would come from authentication)
