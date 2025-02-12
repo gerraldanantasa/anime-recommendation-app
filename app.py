@@ -62,13 +62,15 @@ def load_watchlist(username):
             return json.load(f)
     return []
 
-def add_to_watchlist(username, df):
+def add_to_watchlist(username):
     """Add an anime to the user's watchlist from the dataset"""
     # Load existing watchlist
     global list_film
     list_film = load_watchlist(username)
     
     st.sidebar.header("🎥 Add to Watchlist")
+    
+    df = pd.read_csv('anime-gg.csv')[['anime_id', 'Name', 'Score', 'Genres', 'Type', 'Episodes', 'Synopsis', 'Image URL']]
     
     # Sort and unique anime names from the dataset
     anime_names = sorted(df['Name'].unique())
