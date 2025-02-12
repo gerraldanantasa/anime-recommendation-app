@@ -438,7 +438,7 @@ def main():
         update_watchlist(username)
     
     elif menu == "Add to Watchlist":
-        add_to_watchlist(username)
+        add_to_watchlist(username, df)
 
 if __name__ == '__main__':  
     main()
