@@ -109,7 +109,7 @@ def add_to_watchlist(username):
         
         if st.sidebar.button("Add to Watchlist"):
             # Check for duplicates
-            if not any(film['Name'].lower() == selected_anime.lower() for film in list_film):
+            if not any(str(film['Name']).lower() == str(selected_anime).lower() for film in list_film):
                 new_entry = {
                     'Name': selected_anime,
                     'Genres': anime_data['Genres'].split(',') if pd.notna(anime_data['Genres']) else [],
