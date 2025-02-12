@@ -1,6 +1,11 @@
-streamlit
-pandas
-scikit-learn
-plotly
-streamlit-authenticator
-pyyaml
+# Core Python Libraries
+streamlit==1.30.0
+pandas==2.2.0
+scikit-learn==1.4.0
+
+# Authentication
+streamlit-authenticator==0.2.3
+pyyaml==6.0.1
+
+# Ensure version compatibility
+python-dateutil==2.9.0
