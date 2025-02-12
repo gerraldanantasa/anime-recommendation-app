@@ -108,8 +108,6 @@ def add_to_watchlist(username):
         )
         
         if st.sidebar.button("Add to Watchlist"):
-            # Check for duplicates
-            if not any(str(film['Name']).lower() == str(selected_anime).lower() for film in list_film):
                 new_entry = {
                     'Name': selected_anime,
                     'Genres': anime_data['Genres'].split(',') if pd.notna(anime_data['Genres']) else [],
@@ -127,8 +125,6 @@ def add_to_watchlist(username):
                 # Save updated watchlist
                 save_watchlist(username, list_film)
                 st.sidebar.success(f"'{selected_anime}' added to watchlist!")
-            else:
-                st.sidebar.warning(f"'{selected_anime}' already exists in the list.")
 
 def display_list_film():
     """Display the current list_film across all pages"""
