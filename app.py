@@ -166,8 +166,6 @@ def display_list_film():
         total_episodes = df['Episodes Watched'].sum()
         st.metric("Total Episodes Watched", total_episodes)
 
-
-
 def update_watchlist(username):
     """Update an existing anime in the user's watchlist"""
     global list_film
