@@ -100,12 +100,12 @@ def add_to_watchlist(username):
         status = st.sidebar.selectbox("Watch Status", status_options)
         
         # Optional: Allow user to add initial score
-        score = st.sidebar.slider(
+        score = st.sidebar.number_input(
             "Your Score", 
             min_value=0.0, 
             max_value=10.0, 
             value=anime_data['Score'] if pd.notna(anime_data['Score']) else 0.0, 
-            step=0.1
+            value=0
         )
         
         if st.sidebar.button("Add to Watchlist"):
@@ -131,12 +131,41 @@ def add_to_watchlist(username):
             else:
                 st.sidebar.warning(f"'{selected_anime}' already exists in the list.")
 
+def display_list_film():
+    """Display the current list_film across all pages"""
+    if list_film:
+        # Create a DataFrame for display
+        df = pd.DataFrame(list_film)
+        
+        # Columns to display
+        display_columns = ['Name', 'Genres', 'Type', 'Episodes', 'Episodes Watched', 'Status', 'Score']
+        
+        # Expander to show full watchlist
+        with st.expander("📺 Current Watchlist"):
+            # Display the watchlist
+            st.dataframe(
+                df[display_columns], 
+                use_container_width=True, 
+                hide_index=True
+            )
+            
+            # Additional statistics
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric("Total Anime", len(df))
+            with col2:
+                completed = len(df[df['Status'] == 'Finished'])
+                st.metric("Completed", completed)
+            with col3:
+                total_episodes = df['Episodes Watched'].sum()
+                st.metric("Total Episodes Watched", total_episodes)
+
 def display_watchlist(username):
     """Display the user's watchlist"""
     global list_film
     list_film = load_watchlist(username)
     
-    st.header("📺 My Watchlist")
+    st.header("📺 Detailed Watchlist")
     
     if list_film:
         # Create a DataFrame for display
@@ -145,12 +174,27 @@ def display_watchlist(username):
         # Columns to display
         display_columns = ['Name', 'Genres', 'Type', 'Episodes', 'Episodes Watched', 'Status', 'Score']
         
-        # Display the watchlist
+        # Display the watchlist with more detailed view
         st.dataframe(
             df[display_columns], 
             use_container_width=True, 
             hide_index=True
         )
+        
+        # Detailed view with charts or additional information
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            # Status distribution
+            status_counts = df['Status'].value_counts()
+            st.subheader("Watchlist Status")
+            st.bar_chart(status_counts)
+        
+        with col2:
+            # Progress visualization
+            st.subheader("Watching Progress")
+            df['Progress'] = df['Episodes Watched'] / df['Episodes'] * 100
+            st.bar_chart(df.set_index('Name')['Progress'])
         
         # Optional: Delete functionality
         delete_anime = st.selectbox("Select Anime to Delete", [''] + df['Name'].tolist())
@@ -303,6 +347,12 @@ def main():
     menu = st.sidebar.radio("Navigation", 
         ["Anime Recommender", "My Watchlist", "Update Watchlist", "Add to Watchlist"]
     )
+
+    global list_film
+    list_film = load_watchlist(username)
+    
+    # Display current watchlist on all pages
+    display_list_film()
     
     if menu == "Anime Recommender":
         # Existing recommendation system code
