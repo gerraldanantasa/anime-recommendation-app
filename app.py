@@ -103,8 +103,7 @@ def add_to_watchlist(username):
         score = st.sidebar.number_input(
             "Your Score", 
             min_value=0.0, 
-            max_value=10.0, 
-            value=anime_data['Score'] if pd.notna(anime_data['Score']) else 0.0, 
+            max_value=10.0,  
             value=0.0
         )
         
