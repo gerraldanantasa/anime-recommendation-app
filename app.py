@@ -213,7 +213,7 @@ def display_watchlist(username):
                 # Save updated watchlist
                 save_watchlist(username, list_film)
                 st.success(f"'{delete_anime}' removed from watchlist!")
-                st.experimental_rerun()
+                st.rerun()
     else:
         st.info("Your watchlist is empty. Add some anime!")
 
