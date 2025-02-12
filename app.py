@@ -272,38 +272,53 @@ def get_recommendations(anime_name, df, genre_type_df, genre_type_cosine_matrix)
     if 'anime_id' not in genre_type_df.columns:
         genre_type_df['anime_id'] = df['anime_id']
     
-    genre_type_cosine = genre_type_df.drop(columns=['Name', 'anime_id'], errors='ignore')  
+    # Prepare cosine similarity matrix
+    genre_columns = [col for col in genre_type_df.columns if col not in ['Name', 'anime_id']]
+    genre_type_cosine = genre_type_df[genre_columns]
     
     # Target Value  
     try:
-        target_id = int(target[['anime_id']].values[0][0])
+        target_id = int(target['anime_id'].values[0])
     except (IndexError, ValueError):
-        target_id = 0
-
-    df_target = genre_type_df[genre_type_df['anime_id'] == target_id]
-
-    # Ensure df_target is not empty
-    if df_target.empty:
         return None
 
-    # Target cosine with others  
-    cosine_sim = cosine_similarity(
-        df_target.drop(columns=['Name', 'anime_id'], errors='ignore'), 
-        genre_type_cosine
-    )
+    # Find the index of the target anime in the genre_type_df
+    target_index = genre_type_df[genre_type_df['anime_id'] == target_id].index
+
+    if len(target_index) == 0:
+        return None
+
+    # Compute cosine similarity
+    try:
+        cosine_sim = cosine_similarity(
+            genre_type_df.loc[target_index, genre_columns], 
+            genre_type_cosine
+        )[0]
+    except Exception as e:
+        st.error(f"Error in cosine similarity calculation: {e}")
+        return None
+
+    # Create similarity DataFrame
+    cosine_sim_df = pd.DataFrame({
+        'anime_id': genre_type_df['anime_id'],
+        'Compatibility Score': cosine_sim
+    })
     
-    cosine_sim_df = pd.DataFrame(cosine_sim).transpose().sort_values(0, ascending=False).rename(columns = {0:'Compatibility Score'})
-    cosine_sim_df['Compatibility Score'] = round(cosine_sim_df['Compatibility Score']*100,2)
+    # Sort and process recommendations
+    cosine_sim_df = cosine_sim_df[cosine_sim_df['anime_id'] != target_id]
+    cosine_sim_df['Compatibility Score'] = round(cosine_sim_df['Compatibility Score'] * 100, 2)
+    cosine_sim_df = cosine_sim_df.sort_values('Compatibility Score', ascending=False)
 
-    # Getting anime id based off index
-    list_recommended_index = cosine_sim_df.index.tolist()
-
-    recc_list = genre_type_df.iloc[list_recommended_index]['anime_id'].values.tolist()
-    cosine_sim_df['anime_id'] = recc_list
-
-    df_reccomended = df.iloc[list_recommended_index][df['anime_id'] != target_id]
-    df_final = df_reccomended.merge(cosine_sim_df)
-    return df_final.sort_values('Compatibility Score', ascending=False)  
+    # Merge with original dataframe
+    try:
+        recommendations = df[df['anime_id'].isin(cosine_sim_df['anime_id'])].copy()
+        recommendations = recommendations.merge(cosine_sim_df, on='anime_id')
+        recommendations = recommendations.sort_values('Compatibility Score', ascending=False)
+        
+        return recommendations
+    except Exception as e:
+        st.error(f"Error in recommendation processing: {e}")
+        return None  
 
 def load_data():  
     # Load the main dataframe  
