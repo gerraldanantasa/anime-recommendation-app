@@ -219,74 +219,76 @@ def display_watchlist(username):
 
 def get_user_recommendations(username, df, genre_type_df):
     """
-    Generate personalized recommendations based on the user's watchlist
+    Generate personalized recommendations based on user's watchlist
     
     Args:
-        username (str): The username to load watchlist for
+        username (str): Username to load watchlist for
         df (pandas.DataFrame): Main anime dataset
         genre_type_df (pandas.DataFrame): Genre-type matrix
     
     Returns:
-        pandas.DataFrame: Top recommended anime for the user
+        pandas.DataFrame: Top 10 recommended anime
     """
     # Load user's watchlist
     list_film = load_watchlist(username)
     
     if not list_film:
-        return pd.DataFrame()  # Return empty if no watchlist
-    
-    # Prepare user's watched anime data
-    watched_anime_ids = []
-    watched_scores = []
-    
-    # Find anime IDs from the main dataframe
-    for anime in list_film:
-        try:
-            # Find matching anime in the dataframe
-            matching_anime = df[df['Name'] == anime['Name']]
-            
-            # If anime found and has a score
-            if not matching_anime.empty and anime.get('Score', 0) > 0:
-                watched_anime_ids.append(matching_anime['anime_id'].values[0])
-                watched_scores.append(anime['Score'])
-        except Exception as e:
-            st.error(f"Error processing anime {anime.get('Name', 'Unknown')}: {e}")
-    
-    # If no scored anime, return empty
-    if not watched_anime_ids:
         return pd.DataFrame()
     
-    # Filter genre matrix for watched anime
+    # Get watched anime IDs and scores
+    watched_data = {
+        'anime_id': [],
+        'Score': []
+    }
+    
+    for anime in list_film:
+        matching_anime = df[df['Name'] == anime['Name']]
+        if not matching_anime.empty and anime.get('Score', 0) > 0:
+            watched_data['anime_id'].append(matching_anime['anime_id'].values[0])
+            watched_data['Score'].append(anime['Score'])
+    
+    if not watched_data['anime_id']:
+        return pd.DataFrame()
+    
     try:
-        # Prepare genre matrix for watched anime
-        single_user_matrix = genre_type_df[genre_type_df['anime_id'].isin(watched_anime_ids)].copy()
+        # Create user anime dataframe
+        user_anime_df = df[df['anime_id'].isin(watched_data['anime_id'])].copy()
+        user_anime_df['Score'] = pd.Series(watched_data['Score'])
         
-        # Identify genre columns (excluding 'Name' and 'anime_id')
+        # Get genre matrix for watched anime
+        single_user_matrix = genre_type_df[
+            genre_type_df['anime_id'].isin(watched_data['anime_id'])
+        ].copy()
+        
+        # Get genre columns
         genre_columns = [col for col in single_user_matrix.columns 
-                         if col not in ['Name', 'anime_id']]
-        
-        # Create a score mapping
-        score_map = dict(zip(watched_anime_ids, watched_scores))
+                        if col not in ['Name', 'anime_id']]
         
         # Multiply genre matrix by user ratings
         for column in genre_columns:
-            single_user_matrix[column] = single_user_matrix[column] * single_user_matrix['anime_id'].map(score_map)
+            single_user_matrix[column] = single_user_matrix[column] * user_anime_df['Score'].values
         
         # Calculate genre preference vector
         genre_vector = single_user_matrix[genre_columns].sum() / single_user_matrix[genre_columns].sum().sum()
         
-        # Prepare unwatched matrix (exclude already watched anime)
-        unwatched_matrix = genre_type_df[~genre_type_df['anime_id'].isin(watched_anime_ids)].copy()
+        # Set index for genre_type_df
+        genre_type_df.set_index('anime_id', inplace=True)
         
-        # Normalize recommendation scores
-        df_recc_normalized_matrix = unwatched_matrix[genre_columns].multiply(genre_vector, axis=1)
+        # Get unwatched matrix
+        unwatched_matrix = genre_type_df[
+            ~genre_type_df.index.isin(watched_data['anime_id'])
+        ][genre_columns]
         
         # Calculate recommendation scores
-        reccomended_df = pd.DataFrame(df_recc_normalized_matrix.sum(axis=1)).reset_index()
+        df_recc_normalized_matrix = unwatched_matrix.multiply(genre_vector, axis=1)
+        reccomended_df = pd.DataFrame(
+            df_recc_normalized_matrix.sum(axis=1)
+        ).reset_index()
+        
         reccomended_df.columns = ['anime_id', 'Score']
         reccomended_df = reccomended_df.sort_values('Score', ascending=False)
         
-        # Get top recommended anime
+        # Get top 10 recommendations
         recommeded_list = reccomended_df['anime_id'].head(10).values.tolist()
         top_10_reccomended = df[df['anime_id'].isin(recommeded_list)].copy()
         
@@ -294,9 +296,9 @@ def get_user_recommendations(username, df, genre_type_df):
         top_10_reccomended = top_10_reccomended.merge(reccomended_df, on='anime_id')
         
         return top_10_reccomended.sort_values('Score', ascending=False).head(3)
-    
+        
     except Exception as e:
-        st.error(f"Error in recommendation generation: {e}")
+        st.error(f"Error generating recommendations: {str(e)}")
         return pd.DataFrame()
 
 def display_user_recommendations(username, df, genre_type_df):
