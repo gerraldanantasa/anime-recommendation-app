@@ -193,7 +193,7 @@ def main():
                 st.header(f'🌟 Top Recommendations for {selected_anime}')
                 
                 # Display top recommendations with detailed information
-                for index, row in recommendations.head(10).iterrows():
+                for index, row in recommendations.iterrows():
                     st.markdown(f"""
                     <div class='recommendation-card'>
                         <h3>{row['Name']}</h3>
