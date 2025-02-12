@@ -227,7 +227,7 @@ def get_user_recommendations(username, df, genre_type_df):
         genre_type_df (pandas.DataFrame): Genre-type matrix
     
     Returns:
-        pandas.DataFrame: Top 3 recommended anime
+        pandas.DataFrame: Top 3 recommended anime with consistent column names
     """
     try:
         # Load watchlist
@@ -280,16 +280,21 @@ def get_user_recommendations(username, df, genre_type_df):
         # Step 10: Create final recommendations dataframe
         recommendation_scores = pd.DataFrame({
             'Name': unwatched_matrix['Name'],
-            'Score': recommendation_scores
-        }).sort_values('Score', ascending=False)
+            'Recommendation_Score': recommendation_scores
+        }).sort_values('Recommendation_Score', ascending=False)
         
-        # Get top recommendations
+        # Get top recommendations with all necessary columns
         recommended_df = df[df['Name'].isin(recommendation_scores['Name'])]
         final_recommendations = recommended_df.merge(
             recommendation_scores,
-            on='Name',
-            suffixes=('_original', '_recommendation')
+            on='Name'
         )
+        
+        # Rename columns to match display requirements
+        final_recommendations = final_recommendations.rename(columns={
+            'Score': 'MAL_Score',
+            'Recommendation_Score': 'Score'
+        })
         
         # Return only top 3 recommendations
         return final_recommendations.head(3)
