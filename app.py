@@ -131,16 +131,18 @@ def add_to_watchlist(username):
                 st.sidebar.warning(f"'{selected_anime}' already exists in the list.")
 
 def display_list_film():
-    """Display the current list_film across all pages"""
+    """Display the current list_film and recommendations across all pages"""
     if list_film:
-        # Create a DataFrame for display
-        df = pd.DataFrame(list_film)
+        # Create tabs for Watchlist and Recommendations
+        watchlist_tab, recommendations_tab = st.tabs(["📺 Current Watchlist", "🎯 Recommended For You"])
         
-        # Columns to display
-        display_columns = ['Name', 'Genres', 'Type', 'Episodes', 'Episodes Watched', 'Status', 'Score']
-        
-        # Expander to show full watchlist
-        with st.expander("📺 Current Watchlist"):
+        with watchlist_tab:
+            # Create a DataFrame for display
+            df = pd.DataFrame(list_film)
+            
+            # Columns to display
+            display_columns = ['Name', 'Genres', 'Type', 'Episodes', 'Episodes Watched', 'Status', 'Score']
+            
             # Display the watchlist
             st.dataframe(
                 df[display_columns], 
@@ -148,7 +150,7 @@ def display_list_film():
                 hide_index=True
             )
             
-            # Additional statistics
+            # Statistics in columns
             col1, col2, col3 = st.columns(3)
             with col1:
                 st.metric("Total Anime", len(df))
@@ -158,7 +160,43 @@ def display_list_film():
             with col3:
                 total_episodes = df['Episodes Watched'].sum()
                 st.metric("Total Episodes Watched", total_episodes)
-
+        
+        with recommendations_tab:
+            # Load necessary data for recommendations
+            df_main, genre_type_df, _ = load_data()
+            
+            # Get recommendations
+            recommendations, message = get_watchlist_recommendations(list_film, df_main, genre_type_df)
+            
+            if recommendations is not None:
+                # Filter for top 5 recommendations
+                top_recommendations = recommendations.head(5)
+                
+                # Display in a clean format
+                for _, anime in top_recommendations.iterrows():
+                    col1, col2 = st.columns([1, 3])
+                    
+                    with col1:
+                        st.image(anime['Image URL'], use_container_width=True)
+                    
+                    with col2:
+                        st.markdown(f"""
+                        ### {anime['Name']}
+                        **⭐ MAL Score:** {anime['Score_original']}/10  
+                        **🎯 Match Score:** {anime['Score_recommendation']:.2%}  
+                        **📺 Type:** {anime['Type']}  
+                        **🎬 Episodes:** {anime['Episodes']}
+                        """)
+                    
+                    with st.expander("View Synopsis"):
+                        st.write(anime['Synopsis'])
+                    
+                    st.markdown("---")
+            else:
+                st.info(message)
+    else:
+        st.info("Your watchlist is empty. Add some anime to get started!")
+        
 def display_watchlist(username):
     """Display the user's watchlist"""
     global list_film
@@ -303,8 +341,138 @@ def get_recommendations(anime_name, df, genre_type_df, genre_type_cosine_matrix)
 
     df_reccomended = df.iloc[list_recommended_index][df['anime_id'] != target_id]
     df_final = df_reccomended.merge(cosine_sim_df)
-    return df_final.sort_values('Compatibility Score', ascending=False)  
+    return df_final.sort_values('Compatibility Score', ascending=False)
+  
+# Watchlist based reccomendation
+def get_watchlist_recommendations(username, df, genre_type_df):
+    """
+    Generate recommendations based on user's watchlist and their ratings
+    using genre-weighted collaborative filtering
+    """
+    # Load user's watchlist
+    watchlist = load_watchlist(username)
+    
+    if not watchlist:
+        return None, "Watchlist is empty! Add some anime first."
+        
+    # Create user anime dataframe
+    user_anime_df = pd.DataFrame(watchlist)
+    
+    # Filter for rated anime only (Score > 0)
+    user_anime_df = user_anime_df[user_anime_df['Score'] > 0]
+    
+    if len(user_anime_df) == 0:
+        return None, "No rated anime found! Please rate some anime first."
+    
+    # Get the genre matrix for watched shows
+    watched_genre_matrix = genre_type_df[genre_type_df['Name'].isin(user_anime_df['Name'])]
+    single_user_matrix = watched_genre_matrix.drop(columns=['Name', 'anime_id'])
+    
+    # Convert user_anime_df scores to float
+    user_anime_df['Score'] = user_anime_df['Score'].astype(float)
+    
+    # Weight each genre by user's rating
+    for column in single_user_matrix.columns:
+        single_user_matrix[column] = single_user_matrix[column] * user_anime_df['Score'].values
+    
+    # Create normalized genre preference vector
+    genre_vector = single_user_matrix.sum() / single_user_matrix.sum().sum()
+    
+    # Get genre matrix for unwatched shows
+    unwatched_matrix = genre_type_df[~genre_type_df['Name'].isin(user_anime_df['Name'])]
+    unwatched_genres = unwatched_matrix.drop(columns=['Name', 'anime_id'])
+    
+    # Calculate recommendation scores
+    df_recc_normalized_matrix = unwatched_genres.multiply(genre_vector, axis=1)
+    recommendation_scores = pd.DataFrame(df_recc_normalized_matrix.sum(axis=1))
+    recommendation_scores['Name'] = unwatched_matrix['Name']
+    recommendation_scores.columns = ['Score', 'Name']
+    
+    # Sort by score and get recommendations
+    recommendation_scores = recommendation_scores.sort_values('Score', ascending=False)
+    
+    # Merge with original dataframe to get full anime details
+    recommended_df = df[df['Name'].isin(recommendation_scores['Name'])]
+    final_recommendations = recommended_df.merge(
+        recommendation_scores,
+        on='Name',
+        suffixes=('_original', '_recommendation')
+    )
+    
+    return final_recommendations, "Success"
 
+def display_watchlist_recommendations(username, df, genre_type_df):
+    """
+    Display recommendations based on user's watchlist
+    """
+    st.header("🎯 Personalized Recommendations Based on Your Watchlist")
+    
+    recommendations, message = get_watchlist_recommendations(username, df, genre_type_df)
+    
+    if recommendations is None:
+        st.warning(message)
+        return
+        
+    # Filter options
+    col1, col2 = st.columns(2)
+    with col1:
+        min_score = st.slider(
+            "Minimum MAL Score",
+            0.0, 10.0, 6.0, 0.1
+        )
+    with col2:
+        num_recommendations = st.selectbox(
+            "Number of Recommendations",
+            options=[10, 20, 30, 50],
+            index=0
+        )
+    
+    # Apply filters
+    filtered_recommendations = recommendations[
+        recommendations['Score_original'] >= min_score
+    ].head(num_recommendations)
+    
+    # Display recommendations
+    for _, anime in filtered_recommendations.iterrows():
+        with st.container():
+            st.markdown(f"""
+            <div class='recommendation-card'>
+                <h3>{anime['Name']}</h3>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            col1, col2 = st.columns([1, 3])
+            
+            with col1:
+                st.image(anime['Image URL'], use_container_width=True)
+            
+            with col2:
+                st.markdown(f"""
+                **⭐ MAL Score:** {anime['Score_original']}/10
+                
+                **🎯 Recommendation Score:** {anime['Score_recommendation']:.2%}
+                
+                **📺 Type:** {anime['Type']}
+                
+                **🎬 Episodes:** {anime['Episodes']}
+                
+                **🏷️ Genres:** {anime['Genres']}
+                """)
+            
+            with st.expander("Synopsis"):
+                st.write(anime['Synopsis'])
+            
+            st.markdown("---")
+    
+    # Add to main menu options
+    if "Personalized Recommendations" not in st.session_state:
+        st.session_state.menu_options = [
+            "Anime Recommender",
+            "Personalized Recommendations",
+            "My Watchlist",
+            "Update Watchlist",
+            "Add to Watchlist"
+        ]
 def load_data():  
     # Load the main dataframe  
     df = pd.read_csv('anime-gg.csv')[['anime_id', 'Name', 'Score', 'Genres', 'Type', 'Episodes', 'Synopsis', 'Image URL']]
