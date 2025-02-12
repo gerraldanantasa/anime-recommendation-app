@@ -145,7 +145,7 @@ def main():
     # Number of Recommendations Filter  
     recommendation_count = st.sidebar.selectbox(  
         '**Number of Recommendations**',  
-        options=[10, 20, 50],
+        options=[10, 15, 20, 25, 50],
         help="Choose how many anime recommendations you want to see"
     )  
     
