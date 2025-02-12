@@ -241,13 +241,12 @@ def update_watchlist(username):
                 index=status_options.index(selected_film['Status'])
             )
             
-            score = st.sidebar.slider(
-                "Score", 
-                min_value=0.0, 
-                max_value=10.0, 
-                value=selected_film['Score'], 
-                step=0.1
-            )
+            score = st.sidebar.number_input(
+            "Your Score", 
+            min_value=0.0, 
+            max_value=10.0,  
+            value=0.0
+        )
             
             if st.sidebar.button("Update"):
                 # Update the film entry
