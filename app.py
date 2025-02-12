@@ -190,7 +190,7 @@ def display_list_film():
                     st.markdown(f"""
                     #### {anime['Name']}
                     ⭐ **Score:** {anime['Score_original']}/10  
-                    🎯 **Match:** {anime['Score_recommendation']:.2%}
+                    🎯 **Match:** {display_recommendation_score(anime['Score_recommendation'])}
                     """)
                     
                     with st.expander("More Info"):
@@ -205,7 +205,7 @@ def display_list_film():
     else:
         st.info(message)
 
-        
+
 def update_watchlist(username):
     """Update an existing anime in the user's watchlist"""
     global list_film
@@ -305,7 +305,7 @@ def get_recommendations(anime_name, df, genre_type_df, genre_type_cosine_matrix)
 def get_watchlist_recommendations(watchlist, df, genre_type_df):
     """
     Generate recommendations based on watchlist and ratings
-    using genre-weighted collaborative filtering
+    using genre-weighted collaborative filtering with normalized scores
     """
     try:
         if not watchlist:
@@ -335,9 +335,11 @@ def get_watchlist_recommendations(watchlist, df, genre_type_df):
         scores = []
         for name in watched_genre_matrix['Name']:
             score = user_anime_df[user_anime_df['Name'] == name]['Score'].iloc[0]
-            scores.append(float(score))
+            # Normalize user scores to 0-1 range
+            normalized_score = float(score) / 10.0
+            scores.append(normalized_score)
         
-        # Weight each genre by user's rating
+        # Weight each genre by user's normalized rating
         weighted_matrix = single_user_matrix.multiply(scores, axis=0)
         
         # Create normalized genre preference vector
@@ -349,9 +351,19 @@ def get_watchlist_recommendations(watchlist, df, genre_type_df):
         
         # Calculate recommendation scores
         df_recc_normalized_matrix = unwatched_genres.multiply(genre_vector, axis=1)
-        recommendation_scores = pd.DataFrame(df_recc_normalized_matrix.sum(axis=1))
-        recommendation_scores['Name'] = unwatched_matrix['Name']
-        recommendation_scores.columns = ['Score', 'Name']
+        recommendation_scores = df_recc_normalized_matrix.sum(axis=1)
+        
+        # Normalize scores to 0-1 range using min-max scaling
+        min_score = recommendation_scores.min()
+        max_score = recommendation_scores.max()
+        if max_score > min_score:
+            recommendation_scores = (recommendation_scores - min_score) / (max_score - min_score)
+        
+        # Convert to DataFrame
+        recommendation_scores = pd.DataFrame({
+            'Score': recommendation_scores,
+            'Name': unwatched_matrix['Name']
+        })
         
         # Sort by score and get recommendations
         recommendation_scores = recommendation_scores.sort_values('Score', ascending=False)
@@ -369,6 +381,10 @@ def get_watchlist_recommendations(watchlist, df, genre_type_df):
     except Exception as e:
         st.error(f"Error generating recommendations: {str(e)}")
         return None, "An error occurred while generating recommendations."
+
+def display_recommendation_score(score):
+    """Format the recommendation score as a percentage between 0-100"""
+    return f"{min(100, max(0, score * 100)):.1f}%"
 
 def display_watchlist_recommendations(username, df, genre_type_df):
     """
