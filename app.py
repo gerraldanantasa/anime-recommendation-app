@@ -194,14 +194,10 @@ def display_list_film():
                     """)
                     
                     with st.expander("More Info"):
-                        st.write(f"""
-                        **Type:** {anime['Type']}  
-                        **Episodes:** {anime['Episodes']}  
-                        **Genres:** {anime['Genres']}
-                        
-                        **Synopsis:**  
-                        {anime['Synopsis'] if pd.notna(anime['Synopsis']) else "No synopsis available."}
-                        """)
+                        st.markdown(f"**Type:** {anime['Type']}")
+                        st.markdown(f"**Episodes:** {anime['Episodes']}")
+                        st.markdown(f"**Genres:** {', '.join(str(anime['Genres']).split(','))}")
+                        st.write(anime['Synopsis'])
     else:
         st.info(message)
 
@@ -305,7 +301,6 @@ def get_recommendations(anime_name, df, genre_type_df, genre_type_cosine_matrix)
 def get_watchlist_recommendations(watchlist, df, genre_type_df):
     """
     Generate recommendations based on watchlist and ratings
-    using genre-weighted collaborative filtering
     """
     try:
         if not watchlist:
@@ -313,6 +308,9 @@ def get_watchlist_recommendations(watchlist, df, genre_type_df):
         
         # Create user anime dataframe
         user_anime_df = pd.DataFrame(watchlist)
+        
+        # Debug print
+        st.write("User ratings:", user_anime_df[['Name', 'Score']])
         
         # Filter for rated anime only (Score > 0)
         user_anime_df = user_anime_df[user_anime_df['Score'] > 0]
@@ -324,50 +322,71 @@ def get_watchlist_recommendations(watchlist, df, genre_type_df):
         watched_names = user_anime_df['Name'].tolist()
         watched_genre_matrix = genre_type_df[genre_type_df['Name'].isin(watched_names)]
         
+        # Debug print
+        st.write("Found genres for:", watched_genre_matrix['Name'].tolist())
+        
         if watched_genre_matrix.empty:
             return None, "Could not find genre information for your watched anime."
         
         # Get feature columns (excluding Name and anime_id)
         feature_columns = [col for col in genre_type_df.columns if col not in ['Name', 'anime_id']]
+        
+        # Debug print
+        st.write("Feature columns:", feature_columns)
+        
         single_user_matrix = watched_genre_matrix[feature_columns]
         
-        # Get user scores
+        # Get user scores and create weights
         scores = []
         for name in watched_genre_matrix['Name']:
             score = user_anime_df[user_anime_df['Name'] == name]['Score'].iloc[0]
             scores.append(float(score))
         
+        # Debug print
+        st.write("User scores:", scores)
+        
         # Weight each genre by user's rating
         weighted_matrix = single_user_matrix.multiply(scores, axis=0)
         
-        # Create genre preference vector (without normalizing the sum)
-        genre_vector = weighted_matrix.sum()
+        # Sum up genre preferences
+        genre_preferences = weighted_matrix.sum()
         
-        # Get genre matrix for unwatched shows
+        # Debug print
+        st.write("Genre preferences:", genre_preferences.to_dict())
+        
+        # Get unwatched shows
         unwatched_matrix = genre_type_df[~genre_type_df['Name'].isin(watched_names)]
         unwatched_genres = unwatched_matrix[feature_columns]
         
-        # Calculate recommendation scores
-        df_recc_matrix = unwatched_genres.multiply(genre_vector, axis=1)
-        recommendation_scores = df_recc_matrix.sum(axis=1)
+        # Calculate similarity scores
+        similarity_scores = []
+        for _, row in unwatched_genres.iterrows():
+            # Calculate dot product
+            score = sum(row[genre] * weight for genre, weight in genre_preferences.items())
+            # Normalize by maximum possible score
+            max_score = sum(genre_preferences[genre] for genre in feature_columns if row[genre] == 1)
+            if max_score > 0:
+                normalized_score = (score / max_score) * 100
+            else:
+                normalized_score = 0
+            similarity_scores.append(normalized_score)
         
-        # Scale scores to percentage (multiply by 10 to account for 1-10 rating scale)
-        max_possible_score = len(feature_columns) * 10  # Maximum possible score
-        recommendation_scores = (recommendation_scores / max_possible_score) * 100
-        
-        # Convert to DataFrame
-        recommendation_scores = pd.DataFrame({
-            'Score': recommendation_scores,
-            'Name': unwatched_matrix['Name']
+        # Create recommendations dataframe
+        recommendations = pd.DataFrame({
+            'Name': unwatched_matrix['Name'],
+            'Score': similarity_scores
         })
         
-        # Sort by score and get recommendations
-        recommendation_scores = recommendation_scores.sort_values('Score', ascending=False)
+        # Sort and get recommendations
+        recommendations = recommendations.sort_values('Score', ascending=False)
         
-        # Merge with original dataframe to get full anime details
-        recommended_df = df[df['Name'].isin(recommendation_scores['Name'])]
+        # Debug print
+        st.write("Top 5 raw scores:", recommendations.head())
+        
+        # Merge with original dataframe
+        recommended_df = df[df['Name'].isin(recommendations['Name'])]
         final_recommendations = recommended_df.merge(
-            recommendation_scores,
+            recommendations,
             on='Name',
             suffixes=('_original', '_recommendation')
         )
@@ -376,8 +395,8 @@ def get_watchlist_recommendations(watchlist, df, genre_type_df):
         
     except Exception as e:
         st.error(f"Error generating recommendations: {str(e)}")
+        st.error("Full error:", e)
         return None, "An error occurred while generating recommendations."
-
 def display_recommendation_score(score):
     """Format the recommendation score as a percentage between 0-100"""
     return f"{min(100, max(0, score * 100)):.1f}%"
