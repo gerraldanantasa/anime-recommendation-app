@@ -264,6 +264,9 @@ def get_user_recommendations(username, df, genre_type_df):
         genre_columns = [col for col in single_user_matrix.columns 
                         if col not in ['Name', 'anime_id']]
         
+        # Create a copy of genre_type_df
+        genre_type_df_copy = genre_type_df.copy()
+        
         # Multiply genre matrix by user ratings
         for column in genre_columns:
             single_user_matrix[column] = single_user_matrix[column] * user_anime_df['Score'].values
@@ -271,12 +274,9 @@ def get_user_recommendations(username, df, genre_type_df):
         # Calculate genre preference vector
         genre_vector = single_user_matrix[genre_columns].sum() / single_user_matrix[genre_columns].sum().sum()
         
-        # Set index for genre_type_df
-        genre_type_df.set_index('anime_id', inplace=True)
-        
-        # Get unwatched matrix
-        unwatched_matrix = genre_type_df[
-            ~genre_type_df.index.isin(watched_data['anime_id'])
+        # Get unwatched matrix without setting index
+        unwatched_matrix = genre_type_df_copy[
+            ~genre_type_df_copy['anime_id'].isin(watched_data['anime_id'])
         ][genre_columns]
         
         # Calculate recommendation scores
@@ -285,8 +285,14 @@ def get_user_recommendations(username, df, genre_type_df):
             df_recc_normalized_matrix.sum(axis=1)
         ).reset_index()
         
-        reccomended_df.columns = ['anime_id', 'Score']
-        reccomended_df = reccomended_df.sort_values('Score', ascending=False)
+        # Get anime_ids for unwatched anime
+        unwatched_anime_ids = genre_type_df_copy[
+            ~genre_type_df_copy['anime_id'].isin(watched_data['anime_id'])
+        ]['anime_id'].values
+        
+        reccomended_df['anime_id'] = unwatched_anime_ids
+        reccomended_df.columns = ['index', 'Score', 'anime_id']
+        reccomended_df = reccomended_df[['anime_id', 'Score']].sort_values('Score', ascending=False)
         
         # Get top 10 recommendations
         recommeded_list = reccomended_df['anime_id'].head(10).values.tolist()
