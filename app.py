@@ -62,46 +62,72 @@ def load_watchlist(username):
             return json.load(f)
     return []
 
-def add_to_watchlist(username):
-    """Add an anime to the user's watchlist"""
+def add_to_watchlist(username, df):
+    """Add an anime to the user's watchlist from the dataset"""
     # Load existing watchlist
     global list_film
     list_film = load_watchlist(username)
     
     st.sidebar.header("🎥 Add to Watchlist")
     
-    # Input fields
-    anime_name = st.sidebar.text_input("Anime Name")
-    genres = st.sidebar.text_input("Genres (comma-separated)")
-    total_episodes = st.sidebar.number_input("Total Episodes", min_value=1)
-    episodes_watched = st.sidebar.number_input("Episodes Watched", min_value=0)
-    status_options = ['Not Started', 'Watching', 'Finished']
-    status = st.sidebar.selectbox("Watch Status", status_options)
+    # Sort and unique anime names from the dataset
+    anime_names = sorted(df['Name'].unique())
     
-    if st.sidebar.button("Add to List"):
-        if anime_name:
+    # Search box with autocomplete for anime selection
+    selected_anime = st.sidebar.selectbox(
+        "Select Anime to Add",
+        options=anime_names,
+        index=None,
+        placeholder="Type to search..."
+    )
+    
+    # If an anime is selected
+    if selected_anime:
+        # Find the anime in the dataset
+        anime_data = df[df['Name'] == selected_anime].iloc[0]
+        
+        # Prepare additional input fields
+        episodes_watched = st.sidebar.number_input(
+            "Episodes Watched", 
+            min_value=0, 
+            max_value=int(anime_data['Episodes']) if pd.notna(anime_data['Episodes']) else 1000,
+            value=0
+        )
+        
+        status_options = ['Not Started', 'Watching', 'Finished']
+        status = st.sidebar.selectbox("Watch Status", status_options)
+        
+        # Optional: Allow user to add initial score
+        score = st.sidebar.slider(
+            "Your Score", 
+            min_value=0.0, 
+            max_value=10.0, 
+            value=anime_data['Score'] if pd.notna(anime_data['Score']) else 0.0, 
+            step=0.1
+        )
+        
+        if st.sidebar.button("Add to Watchlist"):
             # Check for duplicates
-            if not any(film['Name'].lower() == anime_name.lower() for film in list_film):
+            if not any(film['Name'].lower() == selected_anime.lower() for film in list_film):
                 new_entry = {
-                    'Name': anime_name,
-                    'Genres': genres.split(',') if genres else [],
-                    'Type': 'Anime',  # Default to Anime
-                    'Episodes': total_episodes,
+                    'Name': selected_anime,
+                    'Genres': anime_data['Genres'].split(',') if pd.notna(anime_data['Genres']) else [],
+                    'Type': anime_data['Type'] if pd.notna(anime_data['Type']) else 'Anime',
+                    'Episodes': int(anime_data['Episodes']) if pd.notna(anime_data['Episodes']) else 0,
                     'Episodes Watched': episodes_watched,
                     'Status': status,
-                    'Score': 0.0,  # Default score
-                    'Synopsis': '',  # Optional
-                    'Image URL': ''  # Optional
+                    'Score': score,
+                    'Synopsis': str(anime_data['Synopsis']) if pd.notna(anime_data['Synopsis']) else '',
+                    'Image URL': str(anime_data['Image URL']) if pd.notna(anime_data['Image URL']) else ''
                 }
+                
                 list_film.append(new_entry)
                 
                 # Save updated watchlist
                 save_watchlist(username, list_film)
-                st.sidebar.success(f"'{anime_name}' added to watchlist!")
+                st.sidebar.success(f"'{selected_anime}' added to watchlist!")
             else:
-                st.sidebar.warning(f"'{anime_name}' already exists in the list.")
-        else:
-            st.sidebar.error("Anime name cannot be empty!")
+                st.sidebar.warning(f"'{selected_anime}' already exists in the list.")
 
 def display_watchlist(username):
     """Display the user's watchlist"""
