@@ -309,9 +309,6 @@ def get_watchlist_recommendations(watchlist, df, genre_type_df):
         # Create user anime dataframe
         user_anime_df = pd.DataFrame(watchlist)
         
-        # Debug print
-        st.write("User ratings:", user_anime_df[['Name', 'Score']])
-        
         # Filter for rated anime only (Score > 0)
         user_anime_df = user_anime_df[user_anime_df['Score'] > 0]
         
@@ -322,54 +319,36 @@ def get_watchlist_recommendations(watchlist, df, genre_type_df):
         watched_names = user_anime_df['Name'].tolist()
         watched_genre_matrix = genre_type_df[genre_type_df['Name'].isin(watched_names)]
         
-        # Debug print
-        st.write("Found genres for:", watched_genre_matrix['Name'].tolist())
-        
         if watched_genre_matrix.empty:
             return None, "Could not find genre information for your watched anime."
         
         # Get feature columns (excluding Name and anime_id)
         feature_columns = [col for col in genre_type_df.columns if col not in ['Name', 'anime_id']]
-        
-        # Debug print
-        st.write("Feature columns:", feature_columns)
-        
         single_user_matrix = watched_genre_matrix[feature_columns]
         
-        # Get user scores and create weights
+        # Get user scores and normalize them to 0-1 range
         scores = []
         for name in watched_genre_matrix['Name']:
             score = user_anime_df[user_anime_df['Name'] == name]['Score'].iloc[0]
-            scores.append(float(score))
+            normalized_score = float(score) / 10.0  # Scale down to 0-1
+            scores.append(normalized_score)
         
-        # Debug print
-        st.write("User scores:", scores)
-        
-        # Weight each genre by user's rating
+        # Calculate user profile (average genre preferences weighted by ratings)
         weighted_matrix = single_user_matrix.multiply(scores, axis=0)
-        
-        # Sum up genre preferences
-        genre_preferences = weighted_matrix.sum()
-        
-        # Debug print
-        st.write("Genre preferences:", genre_preferences.to_dict())
+        user_profile = weighted_matrix.mean()  # Use mean instead of sum
         
         # Get unwatched shows
         unwatched_matrix = genre_type_df[~genre_type_df['Name'].isin(watched_names)]
         unwatched_genres = unwatched_matrix[feature_columns]
         
-        # Calculate similarity scores
-        similarity_scores = []
-        for _, row in unwatched_genres.iterrows():
-            # Calculate dot product
-            score = sum(row[genre] * weight for genre, weight in genre_preferences.items())
-            # Normalize by maximum possible score
-            max_score = sum(genre_preferences[genre] for genre in feature_columns if row[genre] == 1)
-            if max_score > 0:
-                normalized_score = (score / max_score) * 100
-            else:
-                normalized_score = 0
-            similarity_scores.append(normalized_score)
+        # Calculate cosine similarity between user profile and each unwatched anime
+        similarity_scores = cosine_similarity(
+            user_profile.values.reshape(1, -1),
+            unwatched_genres.values
+        )[0]
+        
+        # Convert similarity scores to percentages
+        similarity_scores = similarity_scores * 100
         
         # Create recommendations dataframe
         recommendations = pd.DataFrame({
@@ -379,9 +358,6 @@ def get_watchlist_recommendations(watchlist, df, genre_type_df):
         
         # Sort and get recommendations
         recommendations = recommendations.sort_values('Score', ascending=False)
-        
-        # Debug print
-        st.write("Top 5 raw scores:", recommendations.head())
         
         # Merge with original dataframe
         recommended_df = df[df['Name'].isin(recommendations['Name'])]
@@ -395,8 +371,9 @@ def get_watchlist_recommendations(watchlist, df, genre_type_df):
         
     except Exception as e:
         st.error(f"Error generating recommendations: {str(e)}")
-        st.error("Full error:", e)
         return None, "An error occurred while generating recommendations."
+    
+
 def display_recommendation_score(score):
     """Format the recommendation score as a percentage between 0-100"""
     return f"{min(100, max(0, score * 100)):.1f}%"
