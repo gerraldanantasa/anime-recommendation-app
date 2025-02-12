@@ -196,7 +196,7 @@ def display_list_film():
                 st.info(message)
     else:
         st.info("Your watchlist is empty. Add some anime to get started!")
-        
+
 def display_watchlist(username):
     """Display the user's watchlist"""
     global list_film
@@ -301,7 +301,7 @@ def update_watchlist(username):
 # Recommendation function  
 def get_recommendations(anime_name, df, genre_type_df, genre_type_cosine_matrix):  
     # Find target anime  
-    target = df[df['Name'] == anime_name]  
+    target = df[df['Name'].str.lower() == anime_name.lower()] 
     
     if target.empty:  
         return None  
