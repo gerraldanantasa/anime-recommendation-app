@@ -4,8 +4,13 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import CountVectorizer
 import urllib.request 
 from PIL import Image  
+import json
+import os
 
-# Global lists to track anime
+# Ensure watchlists directory exists
+os.makedirs('watchlists', exist_ok=True)
+
+# Global lists to track anime (for compatibility with existing code)
 list_film = []
 favorite_list = []
 
@@ -42,11 +47,27 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Tracking Functionality
+# Watchlist Management Functions
+def save_watchlist(username, watchlist):
+    """Save watchlist to a JSON file"""
+    filename = f'watchlists/{username}_watchlist.json'
+    with open(filename, 'w') as f:
+        json.dump(watchlist, f, indent=4)
 
-@st.cache_data  
-@st.cache_resource
-def add_to_watchlist():
+def load_watchlist(username):
+    """Load watchlist from a JSON file"""
+    filename = f'watchlists/{username}_watchlist.json'
+    if os.path.exists(filename):
+        with open(filename, 'r') as f:
+            return json.load(f)
+    return []
+
+def add_to_watchlist(username):
+    """Add an anime to the user's watchlist"""
+    # Load existing watchlist
+    global list_film
+    list_film = load_watchlist(username)
+    
     st.sidebar.header("🎥 Add to Watchlist")
     
     # Input fields
@@ -63,7 +84,7 @@ def add_to_watchlist():
             if not any(film['Name'].lower() == anime_name.lower() for film in list_film):
                 new_entry = {
                     'Name': anime_name,
-                    'Genres': genres.split(','),
+                    'Genres': genres.split(',') if genres else [],
                     'Type': 'Anime',  # Default to Anime
                     'Episodes': total_episodes,
                     'Episodes Watched': episodes_watched,
@@ -73,13 +94,20 @@ def add_to_watchlist():
                     'Image URL': ''  # Optional
                 }
                 list_film.append(new_entry)
+                
+                # Save updated watchlist
+                save_watchlist(username, list_film)
                 st.sidebar.success(f"'{anime_name}' added to watchlist!")
             else:
                 st.sidebar.warning(f"'{anime_name}' already exists in the list.")
         else:
             st.sidebar.error("Anime name cannot be empty!")
 
-def display_watchlist():
+def display_watchlist(username):
+    """Display the user's watchlist"""
+    global list_film
+    list_film = load_watchlist(username)
+    
     st.header("📺 My Watchlist")
     
     if list_film:
@@ -95,10 +123,27 @@ def display_watchlist():
             use_container_width=True, 
             hide_index=True
         )
+        
+        # Optional: Delete functionality
+        delete_anime = st.selectbox("Select Anime to Delete", [''] + df['Name'].tolist())
+        
+        if delete_anime:
+            if st.button("Confirm Delete"):
+                # Remove the selected anime
+                list_film = [film for film in list_film if film['Name'] != delete_anime]
+                
+                # Save updated watchlist
+                save_watchlist(username, list_film)
+                st.success(f"'{delete_anime}' removed from watchlist!")
+                st.experimental_rerun()
     else:
         st.info("Your watchlist is empty. Add some anime!")
 
-def update_watchlist():
+def update_watchlist(username):
+    """Update an existing anime in the user's watchlist"""
+    global list_film
+    list_film = load_watchlist(username)
+    
     st.sidebar.header("✏️ Update Watchlist")
     
     if list_film:
@@ -139,6 +184,8 @@ def update_watchlist():
                 selected_film['Status'] = status
                 selected_film['Score'] = score
                 
+                # Save updated watchlist
+                save_watchlist(username, list_film)
                 st.sidebar.success(f"'{selected_anime}' updated successfully!")
     else:
         st.sidebar.info("Add anime to your watchlist first!")
@@ -174,6 +221,7 @@ def get_recommendations(anime_name, df, genre_type_df, genre_type_cosine_matrix)
     df_reccomended = df.iloc[list_recommended_index][df['anime_id']!=target_id]
     df_final = df_reccomended.merge(cosine_sim_df)
     return df_final.sort_values('Compatibility Score', ascending=False)  
+
 def load_data():  
     # Load the main dataframe  
     df = pd.read_csv('anime-gg.csv')[['anime_id', 'Name', 'Score', 'Genres', 'Type', 'Episodes', 'Synopsis', 'Image URL']]
@@ -219,9 +267,10 @@ def load_data():
     
     return df, genre_type_df, genre_type_cosine_matrix  
 
-# Keep the recommendation function and main function from the previous version
-
 def main():
+    # Simulate a username (in a real app, this would come from authentication)
+    username = "default_user"
+    
     # Sidebar Navigation
     menu = st.sidebar.radio("Navigation", 
         ["Anime Recommender", "My Watchlist", "Update Watchlist", "Add to Watchlist"]
@@ -357,14 +406,13 @@ def main():
                     st.error('🤷‍♀️ No recommendations found!')
     
     elif menu == "My Watchlist":
-        display_watchlist()
+        display_watchlist(username)
     
     elif menu == "Update Watchlist":
-        update_watchlist()
+        update_watchlist(username)
     
     elif menu == "Add to Watchlist":
-        add_to_watchlist()
+        add_to_watchlist(username)
 
 if __name__ == '__main__':  
     main()
-    
