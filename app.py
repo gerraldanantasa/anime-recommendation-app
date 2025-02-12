@@ -29,6 +29,13 @@ def image_to_base64(image):
 logo_image = Image.open('FT_2025-02-12 20_46_37.034.png')  # Or use the hand-drawn image
 base64_logo = image_to_base64(logo_image)
 
+# Custom CSS for improved styling
+st.set_page_config(
+    page_title="Anime Recommender & Tracker",
+    page_icon="🎬",
+    layout="wide"
+)
+
 # In sidebar
 st.sidebar.markdown(f"""
 <div class="logo-container">
@@ -36,12 +43,7 @@ st.sidebar.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# Custom CSS for improved styling
-st.set_page_config(
-    page_title="Anime Recommender & Tracker",
-    page_icon="🎬",
-    layout="wide"
-)
+
 
 # Add custom CSS
 st.markdown("""
