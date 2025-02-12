@@ -317,7 +317,13 @@ def get_watchlist_recommendations(list_film, df, genre_type_df):
             
         # Get the genre matrix for watched shows
         watched_genre_matrix = genre_type_df[genre_type_df['Name'].isin(user_anime_df['Name'])]
-        single_user_matrix = watched_genre_matrix.drop(columns=['Name', 'anime_id'])
+        
+        # Get feature columns (excluding Name and anime_id if they exist)
+        exclude_cols = ['Name']
+        if 'anime_id' in watched_genre_matrix.columns:
+            exclude_cols.append('anime_id')
+        
+        single_user_matrix = watched_genre_matrix.drop(columns=exclude_cols)
         
         # Convert user_anime_df scores to float
         user_anime_df['Score'] = user_anime_df['Score'].astype(float)
@@ -331,7 +337,7 @@ def get_watchlist_recommendations(list_film, df, genre_type_df):
         
         # Get genre matrix for unwatched shows
         unwatched_matrix = genre_type_df[~genre_type_df['Name'].isin(user_anime_df['Name'])]
-        unwatched_genres = unwatched_matrix.drop(columns=['Name', 'anime_id'])
+        unwatched_genres = unwatched_matrix.drop(columns=exclude_cols)
         
         # Calculate recommendation scores
         df_recc_normalized_matrix = unwatched_genres.multiply(genre_vector, axis=1)
@@ -358,7 +364,7 @@ def get_watchlist_recommendations(list_film, df, genre_type_df):
         
     except Exception as e:
         st.error(f"Error generating recommendations: {str(e)}")
-        return None, "An error occurred while generating recommendations."    
+        return None, "An error occurred while generating recommendations." 
 
 def display_recommendation_score(score):
     """Format the recommendation score from 1-10 scale to percentage"""
