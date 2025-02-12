@@ -300,72 +300,95 @@ def get_recommendations(anime_name, df, genre_type_df, genre_type_cosine_matrix)
 # Watchlist based reccomendation
 def get_watchlist_recommendations(watchlist, df, genre_type_df):
     """
-    Generate recommendations based on watchlist and ratings
+    Original recommendation logic with step-by-step value tracking
     """
     try:
         if not watchlist:
             return None, "Please add some anime to your watchlist first!"
         
-        # Create user anime dataframe
+        # Step 1: Process user watchlist
+        st.write("Step 1: Initial Watchlist")
         user_anime_df = pd.DataFrame(watchlist)
+        st.write(user_anime_df[['Name', 'Score']])
         
-        # Filter for rated anime only (Score > 0)
+        # Step 2: Filter rated anime
         user_anime_df = user_anime_df[user_anime_df['Score'] > 0]
+        st.write("\nStep 2: Filtered Rated Anime")
+        st.write(user_anime_df[['Name', 'Score']])
         
         if len(user_anime_df) == 0:
             return None, "Please rate some anime in your watchlist to get recommendations!"
         
-        # Get the genre matrix for watched shows
+        # Step 3: Get genre matrix for watched shows
         watched_names = user_anime_df['Name'].tolist()
         watched_genre_matrix = genre_type_df[genre_type_df['Name'].isin(watched_names)]
+        st.write("\nStep 3: Genre Matrix Columns for Watched Shows")
+        st.write(watched_genre_matrix.columns.tolist())
         
         if watched_genre_matrix.empty:
             return None, "Could not find genre information for your watched anime."
         
-        # Get feature columns (excluding Name and anime_id)
+        # Step 4: Get feature columns and create user matrix
         feature_columns = [col for col in genre_type_df.columns if col not in ['Name', 'anime_id']]
         single_user_matrix = watched_genre_matrix[feature_columns]
+        st.write("\nStep 4: Single User Matrix (Genre Values)")
+        st.write(single_user_matrix)
         
-        # Get user scores and normalize them to 0-1 range
+        # Step 5: Get user scores
         scores = []
         for name in watched_genre_matrix['Name']:
             score = user_anime_df[user_anime_df['Name'] == name]['Score'].iloc[0]
-            normalized_score = float(score) / 10.0  # Scale down to 0-1
-            scores.append(normalized_score)
+            scores.append(float(score))
+        st.write("\nStep 5: User Scores")
+        st.write(dict(zip(watched_names, scores)))
         
-        # Calculate user profile (average genre preferences weighted by ratings)
+        # Step 6: Weight genres by rating
         weighted_matrix = single_user_matrix.multiply(scores, axis=0)
-        user_profile = weighted_matrix.mean()  # Use mean instead of sum
+        st.write("\nStep 6: Weighted Genre Matrix")
+        st.write(weighted_matrix)
         
-        # Get unwatched shows
+        # Step 7: Create genre preference vector
+        genre_vector = weighted_matrix.sum() / weighted_matrix.sum().sum()
+        st.write("\nStep 7: Genre Preference Vector")
+        st.write(genre_vector)
+        
+        # Step 8: Get unwatched shows matrix
         unwatched_matrix = genre_type_df[~genre_type_df['Name'].isin(watched_names)]
         unwatched_genres = unwatched_matrix[feature_columns]
+        st.write("\nStep 8: Unwatched Shows Matrix Shape")
+        st.write(f"Number of unwatched shows: {len(unwatched_genres)}")
+        st.write("Sample of unwatched shows genres:")
+        st.write(unwatched_genres.head())
         
-        # Calculate cosine similarity between user profile and each unwatched anime
-        similarity_scores = cosine_similarity(
-            user_profile.values.reshape(1, -1),
-            unwatched_genres.values
-        )[0]
+        # Step 9: Calculate recommendation scores
+        df_recc_normalized_matrix = unwatched_genres.multiply(genre_vector, axis=1)
+        st.write("\nStep 9: Sample of Score Calculations")
+        st.write("Genre vector used for multiplication:")
+        st.write(genre_vector)
+        st.write("\nSample of weighted genre values (first 5 shows):")
+        st.write(df_recc_normalized_matrix.head())
         
-        # Convert similarity scores to percentages
-        similarity_scores = similarity_scores * 100
+        recommendation_scores = df_recc_normalized_matrix.sum(axis=1)
+        st.write("\nFinal recommendation scores (first 5 shows):")
+        st.write(recommendation_scores.head())
         
-        # Create recommendations dataframe
-        recommendations = pd.DataFrame({
+        # Step 10: Create final recommendations dataframe
+        recommendation_scores = pd.DataFrame({
             'Name': unwatched_matrix['Name'],
-            'Score': similarity_scores
+            'Score': recommendation_scores
         })
-        
-        # Sort and get recommendations
-        recommendations = recommendations.sort_values('Score', ascending=False)
+        recommendation_scores = recommendation_scores.sort_values('Score', ascending=False)
         
         # Merge with original dataframe
-        recommended_df = df[df['Name'].isin(recommendations['Name'])]
+        recommended_df = df[df['Name'].isin(recommendation_scores['Name'])]
         final_recommendations = recommended_df.merge(
-            recommendations,
+            recommendation_scores,
             on='Name',
             suffixes=('_original', '_recommendation')
         )
+        
+        st.write("\nStep 10: Final Top 5 Recommendations")
+        st.write(final_recommendations[['Name', 'Score_recommendation']].head())
         
         return final_recommendations, "Success"
         
