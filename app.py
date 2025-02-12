@@ -131,72 +131,81 @@ def add_to_watchlist(username):
                 st.sidebar.warning(f"'{selected_anime}' already exists in the list.")
 
 def display_list_film():
-    """Display the current list_film and recommendations across all pages"""
-    if list_film:
-        # Create tabs for Watchlist and Recommendations
-        watchlist_tab, recommendations_tab = st.tabs(["📺 Current Watchlist", "🎯 Recommended For You"])
-        
-        with watchlist_tab:
-            # Create a DataFrame for display
-            df = pd.DataFrame(list_film)
-            
-            # Columns to display
-            display_columns = ['Name', 'Genres', 'Type', 'Episodes', 'Episodes Watched', 'Status', 'Score']
-            
-            # Display the watchlist
-            st.dataframe(
-                df[display_columns], 
-                use_container_width=True, 
-                hide_index=True
-            )
-            
-            # Statistics in columns
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                st.metric("Total Anime", len(df))
-            with col2:
-                completed = len(df[df['Status'] == 'Finished'])
-                st.metric("Completed", completed)
-            with col3:
-                total_episodes = df['Episodes Watched'].sum()
-                st.metric("Total Episodes Watched", total_episodes)
-        
-        with recommendations_tab:
-            # Load necessary data for recommendations
-            df_main, genre_type_df, _ = load_data()
-            
-            # Get recommendations
-            recommendations, message = get_watchlist_recommendations(list_film, df_main, genre_type_df)
-            
-            if recommendations is not None:
-                # Filter for top 5 recommendations
-                top_recommendations = recommendations.head(5)
-                
-                # Display in a clean format
-                for _, anime in top_recommendations.iterrows():
-                    col1, col2 = st.columns([1, 3])
-                    
-                    with col1:
-                        st.image(anime['Image URL'], use_container_width=True)
-                    
-                    with col2:
-                        st.markdown(f"""
-                        ### {anime['Name']}
-                        **⭐ MAL Score:** {anime['Score_original']}/10  
-                        **🎯 Match Score:** {anime['Score_recommendation']:.2%}  
-                        **📺 Type:** {anime['Type']}  
-                        **🎬 Episodes:** {anime['Episodes']}
-                        """)
-                    
-                    with st.expander("View Synopsis"):
-                        st.write(anime['Synopsis'])
-                    
-                    st.markdown("---")
-            else:
-                st.info(message)
-    else:
+    """Display the current list_film and recommendations in a single view"""
+    # Get dataframes ready for recommendations
+    df_main, genre_type_df, _ = load_data()
+    
+    st.header("📺 Your Anime Tracker")
+    
+    if not list_film:
         st.info("Your watchlist is empty. Add some anime to get started!")
+        return
+            
+    # Create a DataFrame for display
+    df = pd.DataFrame(list_film)
+    
+    # Columns to display
+    display_columns = ['Name', 'Genres', 'Type', 'Episodes', 'Episodes Watched', 'Status', 'Score']
+    
+    # Display the watchlist
+    st.subheader("Current Watchlist")
+    st.dataframe(
+        df[display_columns], 
+        use_container_width=True, 
+        hide_index=True
+    )
+    
+    # Statistics in columns
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.metric("Total Anime", len(df))
+    with col2:
+        completed = len(df[df['Status'] == 'Finished'])
+        st.metric("Completed", completed)
+    with col3:
+        total_episodes = df['Episodes Watched'].sum()
+        st.metric("Total Episodes Watched", total_episodes)
+    
+    # Recommendations section
+    st.markdown("---")
+    st.subheader("🎯 Recommended For You")
+    
+    # Get recommendations
+    recommendations, message = get_watchlist_recommendations(list_film, df_main, genre_type_df)
+    
+    if recommendations is not None:
+        # Create columns for recommendations
+        cols = st.columns(3)
+        
+        # Display top 3 recommendations
+        for idx, (_, anime) in enumerate(recommendations.head(3).iterrows()):
+            with cols[idx]:
+                # Card-like container for each recommendation
+                with st.container():
+                    if pd.notna(anime['Image URL']) and anime['Image URL']:
+                        st.image(anime['Image URL'], use_container_width=True)
+                    else:
+                        st.image("https://via.placeholder.com/150x225?text=No+Image", use_container_width=True)
+                    
+                    st.markdown(f"""
+                    #### {anime['Name']}
+                    ⭐ **Score:** {anime['Score_original']}/10  
+                    🎯 **Match:** {anime['Score_recommendation']:.2%}
+                    """)
+                    
+                    with st.expander("More Info"):
+                        st.write(f"""
+                        **Type:** {anime['Type']}  
+                        **Episodes:** {anime['Episodes']}  
+                        **Genres:** {anime['Genres']}
+                        
+                        **Synopsis:**  
+                        {anime['Synopsis'] if pd.notna(anime['Synopsis']) else "No synopsis available."}
+                        """)
+    else:
+        st.info(message)
 
+        
 def update_watchlist(username):
     """Update an existing anime in the user's watchlist"""
     global list_film
@@ -433,83 +442,6 @@ def display_watchlist_recommendations(username, df, genre_type_df):
             "Update Watchlist",
             "Add to Watchlist"
         ]
-
-def display_list_film():
-    """Display the current list_film and recommendations in a single view"""
-    # Get dataframes ready for recommendations
-    df_main, genre_type_df, _ = load_data()
-    
-    st.header("📺 Your Anime Tracker")
-    
-    if not list_film:
-        st.info("Your watchlist is empty. Add some anime to get started!")
-        return
-            
-    # Create a DataFrame for display
-    df = pd.DataFrame(list_film)
-    
-    # Columns to display
-    display_columns = ['Name', 'Genres', 'Type', 'Episodes', 'Episodes Watched', 'Status', 'Score']
-    
-    # Display the watchlist
-    st.subheader("Current Watchlist")
-    st.dataframe(
-        df[display_columns], 
-        use_container_width=True, 
-        hide_index=True
-    )
-    
-    # Statistics in columns
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.metric("Total Anime", len(df))
-    with col2:
-        completed = len(df[df['Status'] == 'Finished'])
-        st.metric("Completed", completed)
-    with col3:
-        total_episodes = df['Episodes Watched'].sum()
-        st.metric("Total Episodes Watched", total_episodes)
-    
-    # Recommendations section
-    st.markdown("---")
-    st.subheader("🎯 Recommended For You")
-    
-    # Get recommendations
-    recommendations, message = get_watchlist_recommendations(list_film, df_main, genre_type_df)
-    
-    if recommendations is not None:
-        # Create columns for recommendations
-        cols = st.columns(3)
-        
-        # Display top 3 recommendations
-        for idx, (_, anime) in enumerate(recommendations.head(3).iterrows()):
-            with cols[idx]:
-                # Card-like container for each recommendation
-                with st.container():
-                    if pd.notna(anime['Image URL']) and anime['Image URL']:
-                        st.image(anime['Image URL'], use_container_width=True)
-                    else:
-                        st.image("https://via.placeholder.com/150x225?text=No+Image", use_container_width=True)
-                    
-                    st.markdown(f"""
-                    #### {anime['Name']}
-                    ⭐ **Score:** {anime['Score_original']}/10  
-                    🎯 **Match:** {anime['Score_recommendation']:.2%}
-                    """)
-                    
-                    with st.expander("More Info"):
-                        st.write(f"""
-                        **Type:** {anime['Type']}  
-                        **Episodes:** {anime['Episodes']}  
-                        **Genres:** {anime['Genres']}
-                        
-                        **Synopsis:**  
-                        {anime['Synopsis'] if pd.notna(anime['Synopsis']) else "No synopsis available."}
-                        """)
-    else:
-        st.info(message)
-
-
 def load_data():  
     """
     Load and preprocess anime data with error handling
