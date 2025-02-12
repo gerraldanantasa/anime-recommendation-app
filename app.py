@@ -112,7 +112,51 @@ def get_recommendations(anime_name, df, genre_type_df, genre_type_cosine_matrix)
     df_final = df_reccomended.merge(cosine_sim_df)
     return df_final.sort_values('Compatibility Score', ascending=False)  
 
-    # Streamlit App  
+# Function to display next 10 recommendations
+def display_next_recommendations(recommendations, start_index):
+    end_index = min(start_index + 10, len(recommendations))
+    
+    st.subheader(f'📋 Recommendations {start_index + 1} - {end_index}')
+    
+    for index, row in recommendations.iloc[start_index:end_index].iterrows():
+        st.markdown(f"""
+        <div class='recommendation-card'>
+            <h3>{row['Name']}</h3>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Create columns for image and details
+        col1, col2 = st.columns([1, 3])
+        
+        with col1:
+            # Display image
+            st.image(row['Image URL'], use_container_width=True, caption='Anime Poster')
+        
+        with col2:
+            # Display details with improved formatting
+            st.markdown(f"""
+            **📺 Type:** {row['Type']}
+            
+            **⭐ MAL Score:** {row['Score']}/10
+            
+            **🔍 Compatibility Score:** {row['Compatibility Score']}%
+            
+            **🏷️ Genres:** {row['Genres']}
+            """)
+        
+        # Display synopsis
+        st.markdown(f"""
+        **📝 Synopsis:**
+        *{row['Synopsis']}*
+        """)
+        
+        # Add a separator
+        st.markdown("---")
+    
+    # Return the next start index
+    return end_index
+
+# Streamlit App  
 def main():  
     # App Title and Introduction
     st.title('🎬 Anime Recommendation System')
@@ -228,6 +272,10 @@ def main():
                     # Add a separator
                     st.markdown("---")
                 
+                # Initialize session state for pagination
+                if 'current_index' not in st.session_state:
+                    st.session_state.current_index = 10
+                
                 # Display full recommendations dataframe
                 st.subheader('📋 Full Recommendations')
                 display_columns = [  
@@ -238,7 +286,15 @@ def main():
                     recommendations[display_columns],   
                     use_container_width=True,  
                     hide_index=True  
-                )  
+                )
+                
+                # Next 10 recommendations button
+                if st.button('🔍 Show Next 10 Recommendations'):
+                    # Update the current index
+                    st.session_state.current_index = display_next_recommendations(
+                        recommendations, 
+                        st.session_state.current_index
+                    )
             else:  
                 st.error('🤷‍♀️ No recommendations found!')  
 
