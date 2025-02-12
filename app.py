@@ -212,7 +212,7 @@ def main():
                         st.markdown(f"""
                         **📺 Type:** {row['Type']}
                         
-                        **⭐ Score:** {row['Score']}/10
+                        **⭐ MAL Score:** {row['Score']}/10
                         
                         **🔍 Compatibility Score:** {row['Compatibility Score']}%
                         
