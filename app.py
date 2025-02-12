@@ -112,61 +112,7 @@ def get_recommendations(anime_name, df, genre_type_df, genre_type_cosine_matrix)
     df_final = df_reccomended.merge(cosine_sim_df)
     return df_final.sort_values('Compatibility Score', ascending=False)  
 
-# Function to display next 10 recommendations
-def display_next_recommendations(recommendations, start_index):
-    """
-    Display the next 10 recommendations starting from the given index
-    
-    Args:
-    recommendations (pd.DataFrame): Full recommendations DataFrame
-    start_index (int): Starting index for the next batch of recommendations
-    
-    Returns:
-    int: Updated start index for the next batch
-    """
-    end_index = min(start_index + 10, len(recommendations))
-    
-    st.subheader(f'📋 Recommendations {start_index + 1} - {end_index}')
-    
-    for index, row in recommendations.iloc[start_index:end_index].iterrows():
-        st.markdown(f"""
-        <div class='recommendation-card'>
-            <h3>{row['Name']}</h3>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Create columns for image and details
-        col1, col2 = st.columns([1, 3])
-        
-        with col1:
-            # Display image
-            st.image(row['Image URL'], use_container_width=True, caption='Anime Poster')
-        
-        with col2:
-            # Display details with improved formatting
-            st.markdown(f"""
-            **📺 Type:** {row['Type']}
-            
-            **⭐ MAL Score:** {row['Score']}/10
-            
-            **🔍 Compatibility Score:** {row['Compatibility Score']}%
-            
-            **🏷️ Genres:** {row['Genres']}
-            """)
-        
-        # Display synopsis
-        st.markdown(f"""
-        **📝 Synopsis:**
-        *{row['Synopsis']}*
-        """)
-        
-        # Add a separator
-        st.markdown("---")
-    
-    # Return the next start index
-    return end_index
-
-# Streamlit App  
+    # Streamlit App  
 def main():  
     # App Title and Introduction
     st.title('🎬 Anime Recommendation System')
@@ -282,10 +228,6 @@ def main():
                     # Add a separator
                     st.markdown("---")
                 
-                # Initialize session state for pagination
-                st.session_state.recommendations = recommendations
-                st.session_state.current_index = 10
-                
                 # Display full recommendations dataframe
                 st.subheader('📋 Full Recommendations')
                 display_columns = [  
@@ -296,62 +238,7 @@ def main():
                     recommendations[display_columns],   
                     use_container_width=True,  
                     hide_index=True  
-                )
-                
-                # Container for next recommendations
-                next_recommendations_container = st.container()
-                
-                # Next 10 recommendations button
-                if len(recommendations) > 10:
-                    if st.button('🔍 Show Next 10 Recommendations'):
-                        with next_recommendations_container:
-                            # Get current index from session state
-                            start_index = st.session_state.current_index
-                            end_index = min(start_index + 10, len(recommendations))
-                            
-                            st.subheader(f'📋 Recommendations {start_index + 1} - {end_index}')
-                            
-                            for index, row in recommendations.iloc[start_index:end_index].iterrows():
-                                st.markdown(f"""
-                                <div class='recommendation-card'>
-                                    <h3>{row['Name']}</h3>
-                                </div>
-                                """, unsafe_allow_html=True)
-                                
-                                # Create columns for image and details
-                                col1, col2 = st.columns([1, 3])
-                                
-                                with col1:
-                                    # Display image
-                                    st.image(row['Image URL'], use_container_width=True, caption='Anime Poster')
-                                
-                                with col2:
-                                    # Display details with improved formatting
-                                    st.markdown(f"""
-                                    **📺 Type:** {row['Type']}
-                                    
-                                    **⭐ MAL Score:** {row['Score']}/10
-                                    
-                                    **🔍 Compatibility Score:** {row['Compatibility Score']}%
-                                    
-                                    **🏷️ Genres:** {row['Genres']}
-                                    """)
-                                
-                                # Display synopsis
-                                st.markdown(f"""
-                                **📝 Synopsis:**
-                                *{row['Synopsis']}*
-                                """)
-                                
-                                # Add a separator
-                                st.markdown("---")
-                            
-                            # Update the current index
-                            st.session_state.current_index = end_index
-                            
-                            # Show next button if more recommendations available
-                            if st.session_state.current_index < len(recommendations):
-                                st.info(f"Showing {start_index + 1} - {end_index} of {len(recommendations)} recommendations")
+                )  
             else:  
                 st.error('🤷‍♀️ No recommendations found!')  
 
