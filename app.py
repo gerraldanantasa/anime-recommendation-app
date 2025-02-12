@@ -5,9 +5,13 @@ from sklearn.feature_extraction.text import CountVectorizer
 import urllib.request 
 from PIL import Image  
 
+# Global lists to track anime
+list_film = []
+favorite_list = []
+
 # Custom CSS for improved styling
 st.set_page_config(
-    page_title="Anime Recommender",
+    page_title="Anime Recommender & Tracker",
     page_icon="🎬",
     layout="wide"
 )
@@ -38,47 +42,106 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# Tracking Functionality
+
 @st.cache_data  
 @st.cache_resource
-def load_data():  
-    # Load the main dataframe  
-    df = pd.read_csv('anime-gg.csv')[['anime_id', 'Name', 'Score', 'Genres', 'Type', 'Episodes', 'Synopsis', 'Image URL']]
+def add_to_watchlist():
+    st.sidebar.header("🎥 Add to Watchlist")
     
-    # Preprocess Genres  
-    df['Genres'] = df['Genres'].fillna('')  # Fill NaN values with empty string  
+    # Input fields
+    anime_name = st.sidebar.text_input("Anime Name")
+    genres = st.sidebar.text_input("Genres (comma-separated)")
+    total_episodes = st.sidebar.number_input("Total Episodes", min_value=1)
+    episodes_watched = st.sidebar.number_input("Episodes Watched", min_value=0)
+    status_options = ['Not Started', 'Watching', 'Finished']
+    status = st.sidebar.selectbox("Watch Status", status_options)
     
-    # Create CountVectorizer for Genres  
-    cv_genre = CountVectorizer(tokenizer=lambda x: x.split(', '))  
-    genre_matrix = cv_genre.fit_transform(df['Genres'])  
-    genre_names = cv_genre.get_feature_names_out()  
+    if st.sidebar.button("Add to List"):
+        if anime_name:
+            # Check for duplicates
+            if not any(film['Name'].lower() == anime_name.lower() for film in list_film):
+                new_entry = {
+                    'Name': anime_name,
+                    'Genres': genres.split(','),
+                    'Type': 'Anime',  # Default to Anime
+                    'Episodes': total_episodes,
+                    'Episodes Watched': episodes_watched,
+                    'Status': status,
+                    'Score': 0.0,  # Default score
+                    'Synopsis': '',  # Optional
+                    'Image URL': ''  # Optional
+                }
+                list_film.append(new_entry)
+                st.sidebar.success(f"'{anime_name}' added to watchlist!")
+            else:
+                st.sidebar.warning(f"'{anime_name}' already exists in the list.")
+        else:
+            st.sidebar.error("Anime name cannot be empty!")
+
+def display_watchlist():
+    st.header("📺 My Watchlist")
     
-    # Create Genre DataFrame  
-    genre_df = pd.DataFrame(  
-        genre_matrix.toarray(),   
-        columns=genre_names,   
-        index=df['anime_id']  
-    ).reset_index()  
+    if list_film:
+        # Create a DataFrame for display
+        df = pd.DataFrame(list_film)
+        
+        # Columns to display
+        display_columns = ['Name', 'Genres', 'Type', 'Episodes', 'Episodes Watched', 'Status', 'Score']
+        
+        # Display the watchlist
+        st.dataframe(
+            df[display_columns], 
+            use_container_width=True, 
+            hide_index=True
+        )
+    else:
+        st.info("Your watchlist is empty. Add some anime!")
+
+def update_watchlist():
+    st.sidebar.header("✏️ Update Watchlist")
     
-    # Create CountVectorizer for Types  
-    cv_type = CountVectorizer(tokenizer=lambda x: x.split(', '))  
-    type_matrix = cv_type.fit_transform(df['Type'])  
-    type_names = cv_type.get_feature_names_out()  
-    
-    # Create Type DataFrame  
-    type_df = pd.DataFrame(  
-        type_matrix.toarray(),   
-        columns=type_names,   
-        index=df['anime_id']  
-    ).reset_index()  
-    
-    # Merge genre and type dataframes  
-    genre_type_df = genre_df.merge(type_df)  
-    
-    # Compute cosine similarity matrix  
-    genre_type_cosine = genre_type_df.drop(columns='anime_id')  
-    genre_type_cosine_matrix = cosine_similarity(genre_type_cosine)  
-    
-    return df, genre_type_df, genre_type_cosine_matrix  
+    if list_film:
+        # Create a list of anime names for selection
+        anime_names = [film['Name'] for film in list_film]
+        selected_anime = st.sidebar.selectbox("Select Anime to Update", anime_names)
+        
+        # Find the selected anime
+        selected_film = next((film for film in list_film if film['Name'] == selected_anime), None)
+        
+        if selected_film:
+            # Update fields
+            episodes_watched = st.sidebar.number_input(
+                "Episodes Watched", 
+                min_value=0, 
+                max_value=selected_film['Episodes'], 
+                value=selected_film['Episodes Watched']
+            )
+            
+            status_options = ['Not Started', 'Watching', 'Finished']
+            status = st.sidebar.selectbox(
+                "Watch Status", 
+                status_options, 
+                index=status_options.index(selected_film['Status'])
+            )
+            
+            score = st.sidebar.slider(
+                "Score", 
+                min_value=0.0, 
+                max_value=10.0, 
+                value=selected_film['Score'], 
+                step=0.1
+            )
+            
+            if st.sidebar.button("Update"):
+                # Update the film entry
+                selected_film['Episodes Watched'] = episodes_watched
+                selected_film['Status'] = status
+                selected_film['Score'] = score
+                
+                st.sidebar.success(f"'{selected_anime}' updated successfully!")
+    else:
+        st.sidebar.info("Add anime to your watchlist first!")
 
 # Recommendation function  
 def get_recommendations(anime_name, df, genre_type_df, genre_type_cosine_matrix):  
@@ -111,137 +174,197 @@ def get_recommendations(anime_name, df, genre_type_df, genre_type_cosine_matrix)
     df_reccomended = df.iloc[list_recommended_index][df['anime_id']!=target_id]
     df_final = df_reccomended.merge(cosine_sim_df)
     return df_final.sort_values('Compatibility Score', ascending=False)  
+def load_data():  
+    # Load the main dataframe  
+    df = pd.read_csv('anime-gg.csv')[['anime_id', 'Name', 'Score', 'Genres', 'Type', 'Episodes', 'Synopsis', 'Image URL']]
+    
+    # Combine with user's list_film
+    if list_film:
+        user_df = pd.DataFrame(list_film)
+        df = pd.concat([df, user_df], ignore_index=True)
+    
+    # Preprocess Genres  
+    df['Genres'] = df['Genres'].fillna('')  # Fill NaN values with empty string  
+    
+    # Create CountVectorizer for Genres  
+    cv_genre = CountVectorizer(tokenizer=lambda x: x.split(', '))  
+    genre_matrix = cv_genre.fit_transform(df['Genres'])  
+    genre_names = cv_genre.get_feature_names_out()  
+    
+    # Create Genre DataFrame  
+    genre_df = pd.DataFrame(  
+        genre_matrix.toarray(),   
+        columns=genre_names,   
+        index=df['Name']  
+    ).reset_index()  
+    
+    # Create CountVectorizer for Types  
+    cv_type = CountVectorizer(tokenizer=lambda x: x.split(', '))  
+    type_matrix = cv_type.fit_transform(df['Type'])  
+    type_names = cv_type.get_feature_names_out()  
+    
+    # Create Type DataFrame  
+    type_df = pd.DataFrame(  
+        type_matrix.toarray(),   
+        columns=type_names,   
+        index=df['Name']  
+    ).reset_index()  
+    
+    # Merge genre and type dataframes  
+    genre_type_df = genre_df.merge(type_df)  
+    
+    # Compute cosine similarity matrix  
+    genre_type_cosine = genre_type_df.drop(columns='Name')  
+    genre_type_cosine_matrix = cosine_similarity(genre_type_cosine)  
+    
+    return df, genre_type_df, genre_type_cosine_matrix  
 
-    # Streamlit App  
-def main():  
-    # App Title and Introduction
-    st.title('🎬 Anime Recommendation System')
-    st.markdown("""
-    ### Discover Your Next Favorite Anime!
-    Click the small arrow on the top left to search for an anime and get personalized recommendations based on genres and type.
-    """)
+# Keep the recommendation function and main function from the previous version
+
+def main():
+    # Sidebar Navigation
+    menu = st.sidebar.radio("Navigation", 
+        ["Anime Recommender", "My Watchlist", "Update Watchlist", "Add to Watchlist"]
+    )
     
-    # Load data  
-    df, genre_type_df, genre_type_cosine_matrix = load_data()  
-    
-    # Sidebar Configuration
-    st.sidebar.header('🔍 Anime Search', divider='rainbow')
-    st.sidebar.markdown("""
-    *Data sourced from [Kaggle Anime Dataset 2023](https://www.kaggle.com/datasets/dsfelix/animes-dataset-2023/data)*
-    """)
-    
-    # Search box with autocomplete  
-    anime_names = sorted(df['Name'].unique())  
-    selected_anime = st.sidebar.selectbox(  
-        '**Select an Anime**',   
-        options=anime_names,
-        index=None,
-        placeholder="Type to search..."
-    )  
-    
-    # Recommendation Filters  
-    st.sidebar.header('🎯 Recommendation Filters', divider='blue')  
-    
-    # Number of Recommendations Filter  
-    recommendation_count = st.sidebar.selectbox(  
-        '**Number of Recommendations**',  
-        options=[10, 15, 20, 25, 50],
-        help="Choose how many anime recommendations you want to see"
-    )  
-    
-    # Type Filter  
-    unique_types = ['All'] + list(df['Type'].unique())  
-    selected_type = st.sidebar.selectbox(  
-        '**Filter by Anime Type**',  
-        options=unique_types,
-        help="Filter recommendations by anime type"
-    )  
-    
-    # Additional filters  
-    st.sidebar.header('⭐ Score Filter', divider='green')  
-    min_score = st.sidebar.slider(
-        '**Minimum Score**', 
-        0.0, 10.0, 6.0, 0.1,
-        help="Filter recommendations by minimum rating"
-    )  
-    
-    # Recommendation button  
-    if st.sidebar.button('🚀 Get Recommendations', type='primary'):  
-        # Validate anime selection
-        if selected_anime is None:
-            st.error("❌ Please select an anime first!")
-        else:
-            # Get recommendations  
-            recommendations = get_recommendations(  
-                selected_anime,   
-                df,   
-                genre_type_df,   
-                genre_type_cosine_matrix  
-            )  
-            
-            if recommendations is not None and not recommendations.empty:  
-                # Filter by minimum score  
-                recommendations = recommendations[recommendations['Score'] >= min_score]  
-                
-                # Filter by type if not 'All'  
-                if selected_type != 'All':  
-                    recommendations = recommendations[recommendations['Type'] == selected_type]  
-                
-                # Limit number of recommendations  
-                recommendations = recommendations.head(recommendation_count)  
-                
-                st.header(f'🌟 Top Recommendations for {selected_anime}')
-                
-                # Display top recommendations with detailed information
-                for index, row in recommendations.iterrows():
-                    st.markdown(f"""
-                    <div class='recommendation-card'>
-                        <h3>{row['Name']}</h3>
-                    </div>
-                    """, unsafe_allow_html=True)
-                    
-                    # Create columns for image and details
-                    col1, col2 = st.columns([1, 3])
-                    
-                    with col1:
-                        # Display image
-                        st.image(row['Image URL'], use_container_width=True, caption='Anime Poster')
-                    
-                    with col2:
-                        # Display details with improved formatting
-                        st.markdown(f"""
-                        **📺 Type:** {row['Type']}
-                        
-                        **⭐ MAL Score:** {row['Score']}/10
-                        
-                        **🔍 Compatibility Score:** {row['Compatibility Score']}%
-                        
-                        **🏷️ Genres:** {row['Genres']}
-                        """)
-                    
-                    # Display synopsis
-                    st.markdown(f"""
-                    **📝 Synopsis:**
-                    *{row['Synopsis']}*
-                    """)
-                    
-                    # Add a separator
-                    st.markdown("---")
-                
-                # Display full recommendations dataframe
-                st.subheader('📋 Full Recommendations')
-                display_columns = [  
-                    'Name', 'Type', 'Score', 'Compatibility Score',   
-                    'Genres', 'Episodes'
-                ]  
-                st.dataframe(  
-                    recommendations[display_columns],   
-                    use_container_width=True,  
-                    hide_index=True  
+    if menu == "Anime Recommender":
+        # Existing recommendation system code
+        st.title('🎬 Anime Recommendation System')
+        st.markdown("""
+        ### Discover Your Next Favorite Anime!
+        Click the small arrow on the top left to search for an anime and get personalized recommendations based on genres and type.
+        """)
+        
+        # Load data  
+        df, genre_type_df, genre_type_cosine_matrix = load_data()  
+        
+       # Sidebar Configuration
+        st.sidebar.header('🔍 Anime Search', divider='rainbow')
+        st.sidebar.markdown("""
+        *Data sourced from [Kaggle Anime Dataset 2023](https://www.kaggle.com/datasets/dsfelix/animes-dataset-2023/data)*
+        """)
+        
+        # Search box with autocomplete  
+        anime_names = sorted(df['Name'].unique())  
+        selected_anime = st.sidebar.selectbox(  
+            '**Select an Anime**',   
+            options=anime_names,
+            index=None,
+            placeholder="Type to search..."
+        )  
+        
+        # Recommendation Filters  
+        st.sidebar.header('🎯 Recommendation Filters', divider='blue')  
+        
+        # Number of Recommendations Filter  
+        recommendation_count = st.sidebar.selectbox(  
+            '**Number of Recommendations**',  
+            options=[10, 15, 20, 25, 50],
+            help="Choose how many anime recommendations you want to see"
+        )  
+        
+        # Type Filter  
+        unique_types = ['All'] + list(df['Type'].unique())  
+        selected_type = st.sidebar.selectbox(  
+            '**Filter by Anime Type**',  
+            options=unique_types,
+            help="Filter recommendations by anime type"
+        )  
+        
+        # Additional filters  
+        st.sidebar.header('⭐ Score Filter', divider='green')  
+        min_score = st.sidebar.slider(
+            '**Minimum Score**', 
+            0.0, 10.0, 6.0, 0.1,
+            help="Filter recommendations by minimum rating"
+        )  
+        
+        # Recommendation button  
+        if st.sidebar.button('🚀 Get Recommendations', type='primary'):  
+            # Validate anime selection
+            if selected_anime is None:
+                st.error("❌ Please select an anime first!")
+            else:
+                # Get recommendations  
+                recommendations = get_recommendations(  
+                    selected_anime,   
+                    df,   
+                    genre_type_df,   
+                    genre_type_cosine_matrix  
                 )  
-            else:  
-                st.error('🤷‍♀️ No recommendations found!')  
-
+                
+                if recommendations is not None and not recommendations.empty:  
+                    # Filter by minimum score  
+                    recommendations = recommendations[recommendations['Score'] >= min_score]  
+                    
+                    # Filter by type if not 'All'  
+                    if selected_type != 'All':  
+                        recommendations = recommendations[recommendations['Type'] == selected_type]  
+                    
+                    # Limit number of recommendations  
+                    recommendations = recommendations.head(recommendation_count)  
+                    
+                    st.header(f'🌟 Recommendations for {selected_anime}')
+                    
+                    # Display top recommendations with detailed information
+                    for index, row in recommendations.iterrows():
+                        st.markdown(f"""
+                        <div class='recommendation-card'>
+                            <h3>{row['Name']}</h3>
+                        </div>
+                        """, unsafe_allow_html=True)
+                        
+                        # Create columns for image and details
+                        col1, col2 = st.columns([1, 3])
+                        
+                        with col1:
+                            # Display image
+                            st.image(row['Image URL'], use_container_width=True, caption='Anime Poster')
+                        
+                        with col2:
+                            # Display details with improved formatting
+                            st.markdown(f"""
+                            **📺 Type:** {row['Type']}
+                            
+                            **⭐ MAL Score:** {row['Score']}/10
+                            
+                            **🔍 Compatibility Score:** {row['Compatibility Score']}%
+                            
+                            **🏷️ Genres:** {row['Genres']}
+                            """)
+                        
+                        # Display synopsis
+                        st.markdown(f"""
+                        **📝 Synopsis:**
+                        *{row['Synopsis']}*
+                        """)
+                        
+                        # Add a separator
+                        st.markdown("---")
+                    
+                    # Display full recommendations dataframe
+                    st.subheader('📋 Full Recommendations')
+                    display_columns = [  
+                        'Name', 'Type', 'Score', 'Compatibility Score',   
+                        'Genres', 'Episodes'
+                    ]  
+                    st.dataframe(  
+                        recommendations[display_columns],   
+                        use_container_width=True,  
+                        hide_index=True  
+                    )  
+                else:  
+                    st.error('🤷‍♀️ No recommendations found!')
+    
+    elif menu == "My Watchlist":
+        display_watchlist()
+    
+    elif menu == "Update Watchlist":
+        update_watchlist()
+    
+    elif menu == "Add to Watchlist":
+        add_to_watchlist()
 
 if __name__ == '__main__':  
     main()
+    
