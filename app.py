@@ -68,10 +68,11 @@ def add_to_watchlist(username):
     global list_film
     list_film = load_watchlist(username)
     
+    # Load the dataset
+    df = pd.read_csv('anime-gg.csv')[['anime_id', 'Name', 'Score', 'Genres', 'Type', 'Episodes', 'Synopsis', 'Image URL']]
+    
     st.sidebar.header("🎥 Add to Watchlist")
     
-    df = pd.read_csv('anime-gg.csv')[['anime_id', 'Name', 'Score', 'Genres', 'Type', 'Episodes', 'Synopsis', 'Image URL']]
-
     # Sort and unique anime names from the dataset
     anime_names = sorted(df['Name'].unique())
     
@@ -100,20 +101,28 @@ def add_to_watchlist(username):
         status = st.sidebar.selectbox("Watch Status", status_options)
         
         # Optional: Allow user to add initial score
-        score = st.sidebar.number_input(
+        score = st.sidebar.slider(
             "Your Score", 
             min_value=0.0, 
-            max_value=10.0,  
-            value=0.0
+            max_value=10.0, 
+            value=anime_data['Score'] if pd.notna(anime_data['Score']) else 0.0, 
+            step=0.1
         )
         
         if st.sidebar.button("Add to Watchlist"):
-            # Check for duplicates
-            if not any(str(film['Name']).lower() == str(selected_anime).lower() for film in list_film):
+            # Check for duplicates with safer comparison
+            if not any(
+                (film['Name'].lower() if isinstance(film['Name'], str) else film['Name']) 
+                == 
+                (selected_anime.lower() if isinstance(selected_anime, str) else selected_anime) 
+                for film in list_film
+            ):
                 new_entry = {
                     'Name': selected_anime,
-                    'Genres': anime_data['Genres'].split(',') if pd.notna(anime_data['Genres']) else [],
-                    'Type': anime_data['Type'] if pd.notna(anime_data['Type']) else 'Anime',
+                    'Genres': (str(anime_data['Genres']).split(',') 
+                               if pd.notna(anime_data['Genres']) 
+                               else []),
+                    'Type': str(anime_data['Type']) if pd.notna(anime_data['Type']) else 'Anime',
                     'Episodes': int(anime_data['Episodes']) if pd.notna(anime_data['Episodes']) else 0,
                     'Episodes Watched': episodes_watched,
                     'Status': status,
